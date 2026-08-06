@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+  ============================================================================
+  PROPRIETÁRIO: Mauricio Spark
+  MARCA:        SparkMauricio
+  PROJETO:      Burég
+  VERSÃO:       v1.0.0
+  LINHAGEM:     SPARK
+  ============================================================================
+  Documento de Planejamento de Escopo
+  COPYRIGHT: © 2026 / Mauricio Spark. Todos os direitos reservados.
+  ============================================================================
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de gerenciamento de transporte fluvial para produtos agrícolas">
+    <title>Burég</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="favicon/logo.jpg" alt="Logo Burég" class="logo" width="100" height="100">
+        </header>
+
+        <main class="two-column-layout">
+            <!-- Coluna Esquerda: Painel de Entrada -->
+            <div class="left-panel">
+                <section class="form-section">
+                    <h2>📝 Nova Carga</h2>
+                    <form id="transportForm" novalidate>
+                        <div class="form-group">
+                            <label for="produto">Produto:</label>
+                            <select id="produto" required>
+                                <option value="">Selecione...</option>
+                                <option value="banana">🍌 Banana</option>
+                                <option value="farinha">🌾 Farinha</option>
+                                <option value="acai">🫐 Açaí</option>
+                                <option value="cara">🥕 Cará</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="bananaSubtypeGroup" style="display: none;">
+                            <label for="bananaSubtype">Tipo de Banana:</label>
+                            <select id="bananaSubtype">
+                                <option value="pinguelo">🍌 Pinguelo</option>
+                                <option value="filer">🍌 Filer</option>
+                                <option value="ferrao">🍌 Ferrão</option>
+                                <option value="media">🍌 Média</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantidade">Quantidade:</label>
+                                <input type="number" id="quantidade" min="1" required placeholder="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="paradas">Paradas:</label>
+                                <input type="number" id="paradas" min="0" required placeholder="0">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="precoCompra">💰 Compra (R$):</label>
+                                <input type="number" id="precoCompra" min="0.01" step="0.01" required
+                                    placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="precoVenda">🏪 Venda (R$):</label>
+                                <input type="number" id="precoVenda" min="0.01" step="0.01" required placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observacoes">Observações:</label>
+                            <textarea id="observacoes" rows="2" placeholder="Notas da compra..."></textarea>
+                        </div>
+
+                        <div class="product-info" id="productInfo" style="display: none;">
+                            <div id="rulesContent"></div>
+                        </div>
+
+                        <div class="financial-preview" id="financialPreview" style="display: none;">
+                            <div class="preview-item">
+                                <span>Investimento:</span>
+                                <span id="previewInvestimento">R$ 0,00</span>
+                            </div>
+                            <div class="preview-item">
+                                <span>Retorno Previsto:</span>
+                                <span id="previewRetorno">R$ 0,00</span>
+                            </div>
+                            <div class="preview-item profit">
+                                <span>Lucro Líquido:</span>
+                                <span id="previewLucro">R$ 0,00</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                ➕ Adicionar Carga
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-block" id="clearBtn">
+                                🔄 Limpar
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+            </div>
+
+            <!-- Coluna Direita: Painel de Acompanhamento -->
+            <div class="right-panel">
+                <section class="list-section">
+                    <div class="section-header">
+                        <h2>📦 Cargas Carregadas</h2>
+                        <select id="filterProduct" class="filter-compact">
+                            <option value="all">Todos</option>
+                            <option value="banana">🍌 Banana</option>
+                            <option value="banana-pinguelo">🍌 Pinguelo</option>
+                            <option value="banana-filer">🍌 Filer</option>
+                            <option value="banana-ferrao">🍌 Ferrão</option>
+                            <option value="banana-media">🍌 Média</option>
+                            <option value="farinha">🌾 Farinha</option>
+                            <option value="acai">🫐 Açaí</option>
+                            <option value="cara">🥕 Cará</option>
+                        </select>
+                    </div>
+                    <div id="transportList" class="transport-list-compact">
+                        <p class="empty-message">Nenhuma carga carregada.</p>
+                    </div>
+                </section>
+
+                <section class="summary-section">
+                    <h2>📊 Resumo Financeiro</h2>
+                    <div class="financial-summary">
+                        <div class="financial-card">
+                            <div class="card-label">💰 Investimento Total</div>
+                            <div class="card-value" id="totalInvestimento">R$ 0,00</div>
+                        </div>
+                        <div class="financial-card">
+                            <div class="card-label">🏪 Retorno Previsto</div>
+                            <div class="card-value" id="totalRetorno">R$ 0,00</div>
+                        </div>
+                        <div class="financial-card profit-card">
+                            <div class="card-label">💵 Lucro Líquido</div>
+                            <div class="card-value" id="totalLucro">R$ 0,00</div>
+                        </div>
+                        <div class="financial-card">
+                            <div class="card-label">📦 Total Cargas</div>
+                            <div class="card-value" id="totalCargas">0</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Editar Carga</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editQuantidade">Quantidade:</label>
+                    <input type="number" id="editQuantidade" min="1" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editPrecoCompra">Compra (R$):</label>
+                        <input type="number" id="editPrecoCompra" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrecoVenda">Venda (R$):</label>
+                        <input type="number" id="editPrecoVenda" min="0.01" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editParadas">Paradas:</label>
+                    <input type="number" id="editParadas" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="editObservacoes">Observações:</label>
+                    <textarea id="editObservacoes" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="javascript/script.js"></script>
+</body>
+
+</html>
