@@ -8,6 +8,7 @@ Obrigado pelo interesse em contribuir com o projeto Burég! Este guia estabelece
 - Compreensão da filosofia Local-First e privacidade de dados
 - Familiaridade com o contexto de transporte fluvial amazônico (desejável)
 - Ambiente de desenvolvimento com editor de código e navegador moderno
+- Conhecimento de HTML Templates e clonagem de DOM (recomendado)
 
 ## 🤝 Como Contribuir
 
@@ -109,6 +110,9 @@ onde o preço de venda era menor que o preço de compra.
 - Use aspas duplas para atributos
 - Inclua comentários para seções complexas
 - Mantenha estrutura hierárquica clara
+- **Use `<template>` para elementos reutilizáveis**
+- **Zero código JavaScript inline no HTML**
+- **Zero estilos inline no HTML**
 
 ```html
 <!-- ✅ Bom -->
@@ -119,6 +123,16 @@ onde o preço de venda era menor que o preço de compra.
     </form>
 </section>
 
+<!-- Template para elementos reutilizáveis -->
+<template id="transportItemTemplate">
+    <div class="transport-item-compact">
+        <div class="compact-header">
+            <span class="compact-icon"></span>
+            <span class="compact-name"></span>
+        </div>
+    </div>
+</template>
+
 <!-- ❌ Ruim -->
 <div class="form-section">
     <div class="title">Nova Carga</div>
@@ -126,6 +140,9 @@ onde o preço de venda era menor que o preço de compra.
         <!-- campos do formulário -->
     </div>
 </div>
+
+<!-- ❌ Ruim - HTML inline no JavaScript -->
+const html = `<div class="item"><span>${data}</span></div>`;
 ```
 
 ### CSS
@@ -135,6 +152,8 @@ onde o preço de venda era menor que o preço de compra.
 - Use unidades relativas quando apropriado
 - Mantenha ordem lógica de propriedades
 - Comente seções complexas
+- **Elimine duplicações de CSS**
+- **Use classes utilitárias quando apropriado**
 
 ```css
 /* ✅ Bom */
@@ -153,6 +172,19 @@ onde o preço de venda era menor que o preço de compra.
     border: 2px solid #4299e1;
 }
 
+/* Classes utilitárias */
+.hidden {
+    display: none !important;
+}
+
+.positive {
+    color: #28a745;
+}
+
+.negative {
+    color: #dc3545;
+}
+
 /* ❌ Ruim */
 .fs {
     background: #f7fafc;
@@ -168,24 +200,37 @@ onde o preço de venda era menor que o preço de compra.
 - Mantenha funções pequenas e focadas
 - Use nomes descritivos em português ou inglês (consistente)
 - Adicione JSDoc para funções complexas
+- **Zero variáveis DOM intermediárias** - use acesso direto quando necessário
+- **Zero strings HTML no JavaScript** - use templates HTML
+- **Use `template.content.cloneNode(true)` para elementos reutilizáveis**
 
 ```javascript
-// ✅ Bom
-function calculateFinancials(quantidade, precoCompra, precoVenda) {
-    const investimento = quantidade * precoCompra;
-    const retorno = quantidade * precoVenda;
-    const lucro = retorno - investimento;
+// ✅ Bom - Uso de templates HTML
+function renderTransporte(transporte) {
+    const template = document.getElementById('transportItemTemplate');
+    const clone = template.content.cloneNode(true);
     
-    return { investimento, retorno, lucro };
+    clone.querySelector('.compact-icon').textContent = transporte.icon;
+    clone.querySelector('.compact-name').textContent = transporte.nomeProduto;
+    
+    return clone;
 }
 
-// ❌ Ruim
-function calc(q, pc, pv) {
-    var i = q * pc;
-    var r = q * pv;
-    var l = r - i;
-    return { i, r, l };
+// ✅ Bom - Acesso direto ao DOM quando necessário
+function updatePreco(produto, subtype) {
+    const { compra, venda } = getPrecoByProduct(produto, subtype);
+    document.getElementById('precoCompra').value = compra || '';
+    document.getElementById('precoVenda').value = venda || '';
 }
+
+// ❌ Ruim - Variáveis DOM intermediárias
+const form = document.getElementById('transportForm');
+const input = document.getElementById('quantidade');
+// ...
+
+// ❌ Ruim - Strings HTML no JavaScript
+const html = `<div class="item"><span>${data}</span></div>`;
+element.innerHTML = html;
 ```
 
 ## 🧪 Validações Obrigatórias
@@ -197,26 +242,67 @@ Antes de submeter sua contribuição, certifique-se de:
 - [ ] Não há regressões em funcionalidades existentes
 - [ ] Testado em Chrome, Firefox, Edge e Safari
 - [ ] Interface responsiva em diferentes tamanhos de tela
+- [ ] Templates HTML funcionam corretamente
 
 ### 2. Validação de Código
 - [ ] Código segue os padrões estabelecidos
 - [ ] Sem `console.log` deixados no código (use debug adequado)
 - [ ] Comentários em código complexo
 - [ ] Sem código duplicado (DRY principle)
+- [ ] Zero strings HTML no JavaScript
+- [ ] Zero variáveis DOM desnecessárias
+- [ ] Uso de templates HTML para elementos reutilizáveis
 
 ### 3. Validação de Dados
 - [ ] Validação de formulários funciona corretamente
 - [ ] Tratamento de erros implementado
 - [ ] Dados são persistidos corretamente no LocalStorage
 - [ ] Não há vazamento de dados sensíveis
+- [ ] Templates HTML funcionam corretamente
 
 ### 4. Validação de Documentação
 - [ ] README atualizado se necessário
 - [ ] CHANGELOG atualizado com mudanças
 - [ ] Comentários em código explicam lógica complexa
 - [ ] Novas funcionalidades documentadas
+- [ ] Arquitetura de templates documentada se aplicável
 
 ## 🎯 Diretrizes Específicas
+
+### Arquitetura de Templates HTML
+
+O Burég usa uma arquitetura moderna de templates HTML para separar completamente estrutura de lógica:
+
+**Princípios:**
+- **Zero HTML no JavaScript**: Todo HTML estático fica em templates
+- **Clonagem de Templates**: Use `template.content.cloneNode(true)`
+- **Manipulação de Dados**: JavaScript manipula apenas dados, não estrutura
+- **Templates Centralizados**: Todos os templates no arquivo HTML principal
+
+**Exemplo:**
+```html
+<!-- Template no HTML -->
+<template id="messageTemplate">
+    <div class="message" role="alert">
+        <span></span>
+        <span></span>
+    </div>
+</template>
+```
+
+```javascript
+// JavaScript clona e preenche dados
+function showMessage(type, message) {
+    const template = document.getElementById('messageTemplate');
+    const clone = template.content.cloneNode(true);
+    
+    clone.querySelector('.message').className = `message ${type}`;
+    clone.querySelector('.message span:first-child').textContent = icons[type];
+    clone.querySelector('.message span:last-child').textContent = message;
+    
+    document.getElementById('transportForm').prepend(clone);
+}
+```
 
 ### Privacidade e Dados
 
@@ -224,6 +310,7 @@ Antes de submeter sua contribuição, certifique-se de:
 - **NUNCA** implemente telemetria ou tracking
 - **SEMPRE** mantenha a filosofia Local-First
 - **SEMPRE** valide inputs do usuário para evitar XSS
+- **SEMPRE** use templates HTML estáticos para evitar injeção de HTML
 
 ### Performance
 
@@ -231,6 +318,8 @@ Antes de submeter sua contribuição, certifique-se de:
 - Use event delegation para listas dinâmicas
 - Minimize reflows e repaints do DOM
 - Otimize seletores CSS
+- **Use clonagem de templates em vez de geração de strings HTML**
+- **Acesso direto ao DOM quando necessário sem armazenamento intermediário**
 
 ### Acessibilidade
 
@@ -238,6 +327,7 @@ Antes de submeter sua contribuição, certifique-se de:
 - Inclua labels para todos os inputs
 - Mantenha contraste adequado de cores
 - Suporte navegação por teclado quando possível
+- Inclua ARIA labels quando apropriado
 
 ### Internacionalização (i18n)
 
@@ -290,31 +380,54 @@ Funcionalidades complexas:
 
 ### Documentação Útil
 - [HTML5 MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+- [HTML Templates MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/template)
 - [CSS3 MDN](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
 - [JavaScript MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
-- [LocalStorage API](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage)
+- [LocalStorage MDN](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage)
+- [Document.cloneNode() MDN](https://developer.mozilla.org/pt-BR/docs/Web/API/Document/cloneNode)
 
 ### Ferramentas Recomendadas
-- **VS Code**: Editor de código com extensões web
-- **Chrome DevTools**: Debugging e profiling
-- **Lighthouse**: Auditoria de performance e acessibilidade
-- **Prettier**: Formatação de código (opcional)
+- VS Code com extensões HTML/CSS/JavaScript
+- Browser DevTools para debugging
+- Prettier para formatação de código
+- ESLint para linting de JavaScript
 
-## 💬 Comunicação
+## � Dicas Adicionais
 
-- Para dúvidas sobre contribuição: abra uma issue com label `question`
-- Para discussões de design: use label `discussion`
-- Para reportar bugs: use label `bug` com template adequado
-- Seja respeitoso e construtivo em todas as interações
+### Debugging
+- Use console.log apenas para debugging, remova antes do commit
+- Use browser DevTools para inspectar elementos e performance
+- Teste templates HTML usando DevTools Elements panel
 
-## 📜 Licença de Contribuição
+### Performance
+- Use debounce/throttle para eventos frequentes
+- Otimize loops e operações em arrays grandes
+- Use DocumentFragment para manipulação de DOM em massa
+- Prefira clonagem de templates a geração de strings HTML
 
-Ao contribuir, você concorda que suas modificações serão licenciadas sob a mesma licença MIT do projeto, garantindo que o software permaneça livre e aberto.
+### Manutenibilidade
+- Mantenha funções pequenas e focadas
+- Use nomes descritivos para variáveis e funções
+- Comente lógica complexa, não código óbvio
+- Mantenha consistência no estilo de código
 
-## 🎉 Reconhecimento
+## 🎓 Aprendizado
 
-Contribuidores serão listados no README e receberão crédito pelas suas contribuições. Agradecemos seu tempo e expertise em melhorar o Burég!
+Para novos contribuidores, recomendamos:
+
+1. Leia toda a documentação do projeto
+2. Explore o código existente para entender os padrões
+3. Comece com issues marcadas como "good first issue"
+4. Peça feedback nas primeiras contribuições
+5. Aprenda com o review do seu código
+
+## 📞 Suporte
+
+Se tiver dúvidas sobre como contribuir:
+- Abra uma issue com a tag "question"
+- Entre em contato através dos canais oficiais do projeto
+- Consulte a documentação existente antes de perguntar
 
 ---
 
-**Lembre-se**: O objetivo do Burég é servir comunidades amazônicas com simplicidade e eficiência. Mantenha esse foco em todas as suas contribuições.
+**Lembre-se**: Contribuições de alta qualidade são mais importantes que quantidade. Um pequeno PR bem feito é mais valioso que um grande PR mal planejado.

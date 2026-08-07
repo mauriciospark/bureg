@@ -23,7 +23,8 @@ Os valores da SparkMauricio aplicados ao Burég refletem um compromisso com solu
 ### Eficiência
 - **Interface otimizada**: Fluxos de trabalho rápidos e intuitivos
 - **Cálculos em tempo real**: Feedback imediato para tomada de decisões
-- **Performance máxima**: Sem dependências externas que possam comprometer a velocidade
+- **Performance máxima**: Sem dependências externas + arquitetura de templates
+- **Separação de responsabilidades**: HTML, CSS e JavaScript completamente separados
 
 ### Autonomia
 - **Independência de conexão**: Funciona offline após o carregamento inicial
@@ -65,10 +66,10 @@ O Burég foi projetado para atender especificamente:
 O Burég está em constante evolução, com planos para expandir suas capacidades:
 
 ### Curto Prazo
-- **Exportação de dados**: Funcionalidade para exportar relatórios em PDF/CSV
-- **Histórico detalhado**: Registro de todas as operações com timestamps
-- **Modo escuro**: Tema alternativo para uso em ambientes com pouca luz
+- **PWA completo**: Funcionalidade para uso offline completo
+- **Exportação multi-formato**: Exportação em PDF, Excel e CSV
 - **Gráficos financeiros**: Visualização gráfica de evolução de lucros ao longo do tempo
+- **Modo escuro**: Tema alternativo para uso em ambientes com pouca luz
 
 ### Médio Prazo
 - **Sincronização opcional**: Possibilidade de sincronizar dados entre dispositivos (mantendo o foco em privacidade)

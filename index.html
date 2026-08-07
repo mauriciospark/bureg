@@ -5,7 +5,7 @@
   PROPRIETÁRIO: Mauricio Spark
   MARCA:        SparkMauricio
   PROJETO:      Burég
-  VERSÃO:       v1.0.0
+  VERSÃO:       v1.4.2
   LINHAGEM:     SPARK
   ============================================================================
   Documento de Planejamento de Escopo
@@ -19,52 +19,45 @@
     <meta name="description" content="Sistema de gerenciamento de transporte fluvial para produtos agrícolas">
     <title>Burég</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
     <div class="container">
         <header>
             <img src="favicon/logo.jpg" alt="Logo Burég" class="logo" width="100" height="100">
+            <div class="header-actions">
+                <button class="btn btn-compact" id="exportBtn" aria-label="Exportar dados do sistema">📤
+                    Exportar</button>
+                <button class="btn btn-compact" id="importBtn" aria-label="Importar dados para o sistema">📥
+                    Importar</button>
+                <button class="btn btn-compact" id="certificateBtn" aria-label="Gerar comprovante de cargas">📋
+                    Comprovante</button>
+                <button class="btn btn-compact" id="configBtn" aria-label="Configurar preços dos produtos">⚙️ Configurar
+                    Preços</button>
+            </div>
         </header>
 
         <main class="two-column-layout">
-            <!-- Coluna Esquerda: Painel de Entrada -->
             <div class="left-panel">
                 <section class="form-section">
                     <h2>📝 Nova Carga</h2>
                     <form id="transportForm" novalidate>
                         <div class="form-group">
                             <label for="produto">Produto:</label>
-                            <select id="produto" required>
+                            <select id="produto" required aria-label="Selecione o produto">
                                 <option value="">Selecione...</option>
                                 <option value="banana">🍌 Banana</option>
                                 <option value="farinha">🌾 Farinha</option>
+                                <option value="farinhaBanana">🌾 Farinha de Banana</option>
                                 <option value="acai">🫐 Açaí</option>
                                 <option value="cara">🥕 Cará</option>
                             </select>
                         </div>
 
-                        <div class="form-group" id="bananaSubtypeGroup" style="display: none;">
+                        <div class="form-group hidden" id="bananaSubtypeGroup">
                             <label for="bananaSubtype">Tipo de Banana:</label>
-                            <select id="bananaSubtype">
+                            <select id="bananaSubtype" aria-label="Selecione o tipo de banana">
                                 <option value="pinguelo">🍌 Pinguelo</option>
                                 <option value="filer">🍌 Filer</option>
                                 <option value="ferrao">🍌 Ferrão</option>
@@ -75,103 +68,118 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="quantidade">Quantidade:</label>
-                                <input type="number" id="quantidade" min="1" required placeholder="0">
+                                <input type="number" id="quantidade" min="1" required placeholder="0"
+                                    aria-label="Quantidade de produtos">
                             </div>
                             <div class="form-group">
                                 <label for="paradas">Paradas:</label>
-                                <input type="number" id="paradas" min="0" required placeholder="0">
+                                <input type="number" id="paradas" min="0" required placeholder="0"
+                                    aria-label="Número de paradas durante o transporte">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="precoCompra">💰 Compra (R$):</label>
-                                <input type="number" id="precoCompra" min="0.01" step="0.01" required
-                                    placeholder="0.00">
+                                <input type="number" id="precoCompra" min="0.01" step="0.01" required placeholder="0.00"
+                                    aria-label="Preço de compra por unidade">
                             </div>
                             <div class="form-group">
                                 <label for="precoVenda">🏪 Venda (R$):</label>
-                                <input type="number" id="precoVenda" min="0.01" step="0.01" required placeholder="0.00">
+                                <input type="number" id="precoVenda" min="0.01" step="0.01" required placeholder="0.00"
+                                    aria-label="Preço de venda por unidade">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="observacoes">Observações:</label>
-                            <textarea id="observacoes" rows="2" placeholder="Notas da compra..."></textarea>
+                            <textarea id="observacoes" rows="2" placeholder="Notas da compra..."
+                                aria-label="Observações sobre a carga"></textarea>
                         </div>
 
-                        <div class="product-info" id="productInfo" style="display: none;">
+                        <div class="product-info hidden" id="productInfo">
                             <div id="rulesContent"></div>
                         </div>
 
-                        <div class="financial-preview" id="financialPreview" style="display: none;">
+                        <div class="financial-preview hidden" id="financialPreview">
                             <div class="preview-item">
-                                <span>Investimento:</span>
+                                <span>💰 Compra (unidade):</span>
+                                <span id="previewCompraUnitario">R$ 0,00</span>
+                            </div>
+                            <div class="preview-item">
+                                <span>🏪 Venda (unidade):</span>
+                                <span id="previewVendaUnitario">R$ 0,00</span>
+                            </div>
+                            <div class="preview-item">
+                                <span>📦 Total Compra:</span>
                                 <span id="previewInvestimento">R$ 0,00</span>
                             </div>
                             <div class="preview-item">
-                                <span>Retorno Previsto:</span>
+                                <span>📦 Total Venda:</span>
                                 <span id="previewRetorno">R$ 0,00</span>
                             </div>
                             <div class="preview-item profit">
-                                <span>Lucro Líquido:</span>
+                                <span>💵 Lucro Total:</span>
                                 <span id="previewLucro">R$ 0,00</span>
                             </div>
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                ➕ Adicionar Carga
-                            </button>
-                            <button type="button" class="btn btn-secondary btn-block" id="clearBtn">
-                                🔄 Limpar
-                            </button>
+                            <button type="submit" class="btn btn-primary btn-block"
+                                aria-label="Adicionar nova carga ao sistema">➕ Adicionar Carga</button>
+                            <button type="button" class="btn btn-secondary btn-block" id="clearBtn"
+                                aria-label="Limpar o formulário">🔄 Limpar</button>
                         </div>
                     </form>
                 </section>
-
             </div>
 
-            <!-- Coluna Direita: Painel de Acompanhamento -->
             <div class="right-panel">
                 <section class="list-section">
                     <div class="section-header">
-                        <h2>📦 Cargas Carregadas</h2>
-                        <select id="filterProduct" class="filter-compact">
-                            <option value="all">Todos</option>
-                            <option value="banana">🍌 Banana</option>
-                            <option value="banana-pinguelo">🍌 Pinguelo</option>
-                            <option value="banana-filer">🍌 Filer</option>
-                            <option value="banana-ferrao">🍌 Ferrão</option>
-                            <option value="banana-media">🍌 Média</option>
-                            <option value="farinha">🌾 Farinha</option>
-                            <option value="acai">🫐 Açaí</option>
-                            <option value="cara">🥕 Cará</option>
-                        </select>
+                        <h2>� Lista de Cargas</h2>
+                        <div class="header-controls">
+                            <select id="filterProduct" aria-label="Filtrar por produto">
+                                <option value="all">Todos os Produtos</option>
+                                <option value="banana">🍌 Banana</option>
+                                <option value="farinha">� Farinha</option>
+                                <option value="farinhaBanana">� Farinha de Banana</option>
+                                <option value="acai">🫐 Açaí</option>
+                                <option value="cara">🥕 Cará</option>
+                            </select>
+                            <input type="text" id="searchTransport" placeholder="🔍 Buscar..."
+                                aria-label="Buscar cargas">
+                            <select id="sortTransport" aria-label="Ordenar cargas">
+                                <option value="date-desc">Mais Recentes</option>
+                                <option value="date-asc">Mais Antigas</option>
+                                <option value="profit-desc">Maior Lucro</option>
+                                <option value="profit-asc">Menor Lucro</option>
+                                <option value="name-asc">Nome A-Z</option>
+                                <option value="name-desc">Nome Z-A</option>
+                            </select>
+                        </div>
                     </div>
-                    <div id="transportList" class="transport-list-compact">
-                        <p class="empty-message">Nenhuma carga carregada.</p>
-                    </div>
+                    <div class="transport-list" id="transportList"></div>
                 </section>
 
                 <section class="summary-section">
                     <h2>📊 Resumo Financeiro</h2>
-                    <div class="financial-summary">
-                        <div class="financial-card">
-                            <div class="card-label">💰 Investimento Total</div>
-                            <div class="card-value" id="totalInvestimento">R$ 0,00</div>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <label>Total de Cargas</label>
+                            <span id="totalCargas">0</span>
                         </div>
-                        <div class="financial-card">
-                            <div class="card-label">🏪 Retorno Previsto</div>
-                            <div class="card-value" id="totalRetorno">R$ 0,00</div>
+                        <div class="summary-item">
+                            <label>Total Compra</label>
+                            <span id="totalInvestimento">R$ 0,00</span>
                         </div>
-                        <div class="financial-card profit-card">
-                            <div class="card-label">💵 Lucro Líquido</div>
-                            <div class="card-value" id="totalLucro">R$ 0,00</div>
+                        <div class="summary-item">
+                            <label>Total Venda</label>
+                            <span id="totalRetorno">R$ 0,00</span>
                         </div>
-                        <div class="financial-card">
-                            <div class="card-label">📦 Total Cargas</div>
-                            <div class="card-value" id="totalCargas">0</div>
+                        <div class="summary-item">
+                            <label>Lucro Total</label>
+                            <span id="totalLucro">R$ 0,00</span>
                         </div>
                     </div>
                 </section>
@@ -179,8 +187,7 @@
         </main>
     </div>
 
-    <!-- Modal de Edição -->
-    <div id="editModal" class="modal" style="display: none;">
+    <div id="editModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>✏️ Editar Carga</h3>
@@ -189,8 +196,18 @@
             <form id="editForm">
                 <input type="hidden" id="editId">
                 <div class="form-group">
-                    <label for="editQuantidade">Quantidade:</label>
-                    <input type="number" id="editQuantidade" min="1" required>
+                    <label for="editProduto">Produto:</label>
+                    <input type="text" id="editProduto" disabled>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editQuantidade">Quantidade:</label>
+                        <input type="number" id="editQuantidade" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editParadas">Paradas:</label>
+                        <input type="number" id="editParadas" min="0" required>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -203,20 +220,210 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="editParadas">Paradas:</label>
-                    <input type="number" id="editParadas" min="0" required>
-                </div>
-                <div class="form-group">
                     <label for="editObservacoes">Observações:</label>
                     <textarea id="editObservacoes" rows="2"></textarea>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                     <button type="button" class="btn btn-secondary" id="cancelEdit">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div id="certificateModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Comprovante de Cargas</h3>
+                <button class="modal-close" id="closeCertificateModal">&times;</button>
+            </div>
+            <div class="certificate-body" id="certificateContent"></div>
+            <div class="certificate-actions">
+                <button class="btn btn-primary" id="printCertificate">🖨️ Imprimir</button>
+                <button class="btn btn-secondary" id="closeCertificateBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="configModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ Configurar Preços</h3>
+                <button class="modal-close" id="closeConfigModal">&times;</button>
+            </div>
+            <form id="configForm">
+                <h4>👤 Informações do Responsável</h4>
+                <div class="form-group">
+                    <label for="configResponsavel">Nome do Responsável (para comprovantes):</label>
+                    <input type="text" id="configResponsavel" placeholder="Seu nome ou nome da empresa"
+                        aria-label="Nome do responsável para comprovantes">
+                </div>
+
+                <h4>🍌 Tipos de Banana</h4>
+                <div class="form-group">
+                    <label for="configPingueloCompra">🍌 Pinguelo - Compra (R$):</label>
+                    <input type="number" id="configPingueloCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configPingueloVenda">🍌 Pinguelo - Venda (R$):</label>
+                    <input type="number" id="configPingueloVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configFilerCompra">🍌 Filer - Compra (R$):</label>
+                    <input type="number" id="configFilerCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configFilerVenda">🍌 Filer - Venda (R$):</label>
+                    <input type="number" id="configFilerVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configFerraoCompra">🍌 Ferrão - Compra (R$):</label>
+                    <input type="number" id="configFerraoCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configFerraoVenda">🍌 Ferrão - Venda (R$):</label>
+                    <input type="number" id="configFerraoVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configMediaCompra">🍌 Média - Compra (R$):</label>
+                    <input type="number" id="configMediaCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configMediaVenda">🍌 Média - Venda (R$):</label>
+                    <input type="number" id="configMediaVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+
+                <h4>🌾 Farinha de Banana</h4>
+                <div class="form-group">
+                    <label for="configFarinhaBananaCompra">🌾 Farinha de Banana - Compra (R$):</label>
+                    <input type="number" id="configFarinhaBananaCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configFarinhaBananaVenda">🌾 Farinha de Banana - Venda (R$):</label>
+                    <input type="number" id="configFarinhaBananaVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+
+                <h4>🫐 Outros Produtos</h4>
+                <div class="form-group">
+                    <label for="configSacoAciaCompra">🫐 Saco de Açaí - Compra (R$):</label>
+                    <input type="number" id="configSacoAciaCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configSacoAciaVenda">🫐 Saco de Açaí - Venda (R$):</label>
+                    <input type="number" id="configSacoAciaVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configSacoCaraCompra">🥕 Saco de Cará - Compra (R$):</label>
+                    <input type="number" id="configSacoCaraCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configSacoCaraVenda">🥕 Saco de Cará - Venda (R$):</label>
+                    <input type="number" id="configSacoCaraVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configSacoFarinhaCompra">🌾 Saco de Farinha - Compra (R$):</label>
+                    <input type="number" id="configSacoFarinhaCompra" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="configSacoFarinhaVenda">🌾 Saco de Farinha - Venda (R$):</label>
+                    <input type="number" id="configSacoFarinhaVenda" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar Configuração</button>
+                    <button type="button" class="btn btn-secondary" id="cancelConfig">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+
+    <!-- Templates -->
+    <template id="rulesTemplate">
+        <h4>📋 Regras de Transporte:</h4>
+        <ul></ul>
+    </template>
+
+    <template id="transportItemTemplate">
+        <div class="transport-item-compact">
+            <div class="compact-header">
+                <div class="compact-title">
+                    <span class="compact-icon"></span>
+                    <span class="compact-name"></span>
+                </div>
+                <div class="compact-date"></div>
+            </div>
+            <div class="compact-details">
+                <div class="compact-detail"><span>📦 Quantidade:</span><span></span></div>
+                <div class="compact-detail"><span>🛑 Paradas:</span><span></span></div>
+                <div class="compact-detail"><span>💰 Compra:</span><span></span></div>
+                <div class="compact-detail"><span>🏪 Venda:</span><span></span></div>
+                <div class="compact-detail"><span>📦 Total Compra:</span><span></span></div>
+                <div class="compact-detail"><span>📦 Total Venda:</span><span></span></div>
+                <div class="financial-item profit">
+                    <span>💵 Lucro Total:</span><span></span>
+                </div>
+            </div>
+            <div class="compact-subtype"></div>
+            <div class="compact-observacoes"></div>
+            <div class="compact-actions">
+                <button class="btn-compact btn-edit" aria-label="Editar carga">✏️</button>
+                <button class="btn-compact btn-delete" aria-label="Excluir carga">🗑️</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="messageTemplate">
+        <div class="message" role="alert">
+            <span></span>
+            <span></span>
+        </div>
+    </template>
+
+    <template id="certificateTemplate">
+        <div class="certificate-header">
+            <h2>📋 COMPROVANTE DE CARGAS</h2>
+            <p><strong>Burég - Sistema de Transporte Fluvial</strong></p>
+            <p>Responsável: <span></span> | Linhagem: SPARK</p>
+        </div>
+        <div class="certificate-info">
+            <div class="certificate-info-item"><label>Data de Emissão:</label><span></span></div>
+            <div class="certificate-info-item"><label>Total de Cargas:</label><span></span></div>
+            <div class="certificate-info-item"><label>Período:</label><span></span></div>
+        </div>
+        <table class="certificate-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Compra (un)</th>
+                    <th>Total Compra</th>
+                    <th>Venda (un)</th>
+                    <th>Total Venda</th>
+                    <th>Lucro</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="certificate-summary">
+            <div class="summary-item"><label>Total Compra:</label><span class="money"></span></div>
+            <div class="summary-item"><label>Total Venda:</label><span class="money"></span></div>
+            <div class="summary-item"><label>Lucro Total:</label><span class="money"></span></div>
+        </div>
+        <div class="certificate-footer">
+            <p>Este documento serve como comprovante oficial de transporte fluvial.</p>
+            <p>Gerado automaticamente pelo sistema Burég - <span></span></p>
+        </div>
+    </template>
+
+    <template id="emptyCertificateTemplate">
+        <div class="empty-certificate">
+            <div class="empty-certificate-icon">📋</div>
+            <h3>Nenhuma carga cadastrada</h3>
+            <p>Cadastre produtos para gerar o comprovante.</p>
+        </div>
+    </template>
 
     <script src="javascript/script.js"></script>
 </body>
