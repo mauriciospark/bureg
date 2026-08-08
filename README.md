@@ -7,7 +7,7 @@ Sistema de gerenciamento de transporte fluvial para produtos agrícolas da regi�
 O Burég é uma aplicação web Local-First projetada para gerenciar o transporte fluvial de produtos agrícolas, oferecendo controle total sobre cargas, cálculos financeiros em tempo real e regras específicas de transporte para produtos como banana, farinha, açaí e cará. O sistema resolve o problema da falta de organização e controle no transporte fluvial, proporcionando eficiência e confiabilidade para produtores e transportadores da região amazônica.
 
 ### Versão Atual
-**v1.4.2** (2026-08-07) - Arquitetura de Templates HTML
+**v1.4.3** (2026-08-08) - Correções PWA e Manifest
 
 ## 🛠 Stack
 
@@ -28,7 +28,7 @@ O Burég é uma aplicação web Local-First projetada para gerenciar o transport
 
 ### Ferramentas
 - **Zero Dependencies** - Sem frameworks ou bibliotecas externas
-- **PWA Ready** - Suporte a Progressive Web App com manifest e ícones
+- **PWA Ready** - Suporte completo a Progressive Web App com manifest configurado e ícones
 - **Editor JSON** - Interface para edição manual da memória do sistema
 
 ## ✨ Funcionalidades
@@ -74,11 +74,19 @@ O Burég utiliza uma arquitetura moderna de **HTML Templates** para separação 
 ### Estrutura de Arquivos
 ```
 burég/
-├── index.html              # HTML principal com templates (413 linhas)
+├── index.html              # HTML principal com templates (433 linhas)
 ├── css/
 │   └── style.css          # Estilos (1034 linhas)
 ├── javascript/
 │   └── script.js          # Lógica JavaScript (826 linhas)
+├── favicon/
+│   ├── manifest.json      # Configuração PWA
+│   ├── logo.jpg           # Logo da aplicação
+│   ├── android-icon-*.png # Ícones Android (6 tamanhos)
+│   ├── apple-icon-*.png   # Ícones Apple (10 tamanhos)
+│   ├── ms-icon-*.png      # Ícones Windows (4 tamanhos)
+│   ├── favicon-*.png      # Favicon variados (3 tamanhos)
+│   └── browserconfig.xml  # Configuração Windows
 ├── json/
 │   ├── memory.json        # Estrutura de dados/backup
 │   └── editor.html        # Editor JSON para edição manual
@@ -186,6 +194,7 @@ Para modificações no código:
 - **Browsers**: Chrome, Firefox, Edge, Safari (versões modernas)
 - **Dispositivos**: Desktop, tablet e mobile
 - **Offline**: Funciona após carregamento inicial
+- **PWA**: Configurado como Progressive Web App com manifesto e ícones
 
 ## 📄 Licença
 
@@ -223,7 +232,7 @@ Desenvolvido como parte da Linhagem SPARK, trazendo soluções tecnológicas par
 
 ---
 
-**Versão**: v1.4.2  
+**Versão**: v1.4.3  
 **Status**: ✅ Ativo e em desenvolvimento  
 **Linhagem**: SPARK  
 **Licença**: MIT

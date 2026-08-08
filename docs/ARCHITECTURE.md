@@ -192,6 +192,35 @@ function showMessage(type, message) {
 - Sincronização entre sessões
 - Backup e exportação de dados
 
+### Camada de PWA (Progressive Web App)
+
+**Responsabilidades:**
+- Configuração de aplicação instalável
+- Gerenciamento de ícones para diferentes plataformas
+- Definição de comportamento de app nativo
+- Configuração de cores e tema visual
+
+**Configuração PWA:**
+- **Manifest JSON**: Configuração em `favicon/manifest.json`
+- **Ícones Android**: 6 tamanhos (36x36 até 192x192)
+- **Ícones Apple**: 10 tamanhos (57x57 até 180x180)
+- **Ícones Windows**: 4 tamanhos (70x70 até 310x310)
+- **Favicons**: 3 tamanhos (16x16, 32x32, 96x96)
+- **Browser Config**: XML para Windows Tiles
+
+**Propriedades do Manifest:**
+```json
+{
+  "name": "Burég",
+  "short_name": "Burég",
+  "start_url": "../index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [...] // Ícones configurados com caminhos relativos
+}
+```
+
 **Implementação:**
 ```javascript
 // Persistência híbrida
@@ -433,11 +462,19 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
 
 ```
 burég/
-├── index.html              # HTML principal com templates
+├── index.html              # HTML principal com templates (433 linhas)
 ├── css/
 │   └── style.css          # Estilos (1034 linhas)
 ├── javascript/
 │   └── script.js          # Lógica JavaScript (826 linhas)
+├── favicon/
+│   ├── manifest.json      # Configuração PWA
+│   ├── logo.jpg           # Logo da aplicação
+│   ├── android-icon-*.png # Ícones Android (6 tamanhos)
+│   ├── apple-icon-*.png   # Ícones Apple (10 tamanhos)
+│   ├── ms-icon-*.png      # Ícones Windows (4 tamanhos)
+│   ├── favicon-*.png      # Favicon variados (3 tamanhos)
+│   └── browserconfig.xml  # Configuração Windows
 ├── json/
 │   ├── memory.json        # Estrutura de dados/backup
 │   └── editor.html        # Editor JSON para edição manual
@@ -585,6 +622,6 @@ items.forEach(item => {
 
 ---
 
-**Última Atualização**: v1.4.2 (2026-08-07)
-**Arquitetura Atual**: Local-First + Vanilla JS + HTML Templates
+**Última Atualização**: v1.4.3 (2026-08-08)
+**Arquitetura Atual**: Local-First + Vanilla JS + HTML Templates + PWA
 **Princípio Principal**: Separação completa entre estrutura, estilo e comportamento

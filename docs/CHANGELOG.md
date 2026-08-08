@@ -5,6 +5,35 @@ Todas as notáveis mudanças adicionadas ao projeto Burég serão documentadas n
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.3] - 2026-08-08
+
+### Fixed
+- **Manifest.json Path Issues** - Corrigidos caminhos absolutos para relativos nos ícones do PWA
+- **App Name Configuration** - Atualizado nome do aplicativo de "App" para "Burég" no manifest
+- **Icon Loading** - Ícones agora carregam corretamente com caminhos relativos ao diretório favicon/
+- **JSON Syntax** - Removidas barras invertidas desnecessárias no campo type dos ícones
+
+### Added
+- **PWA Properties** - Adicionadas propriedades essenciais ao manifest.json:
+  - `short_name`: "Burég" para nomes curtos em dispositivos
+  - `start_url`: Configurado para "../index.html"
+  - `display`: Configurado como "standalone" para experiência de app nativo
+  - `background_color`: Branco para tela de carregamento
+  - `theme_color`: Branco para consistência visual
+
+### Changed
+- **Manifest Reference** - Link rel="manifest" já estava correto no HTML (linha 24)
+- **Icon Paths** - De `/android-icon-36x36.png` para `android-icon-36x36.png` (relativo)
+- **Type Format** - De `image\/png` para `image/png` (correção de escaping)
+
+### Technical Details
+- **Ícones corrigidos**: 6 ícones Android com caminhos relativos
+- **Estrutura JSON**: Adicionadas 5 propriedades PWA essenciais
+- **Mantida funcionalidade**: Todos os ícones estavam presentes no diretório favicon/
+- **Compatibilidade**: Manifest agora totalmente compatível com PWA standards
+
+---
+
 ## [1.4.2] - 2026-08-07
 
 ### Added

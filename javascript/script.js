@@ -3,7 +3,7 @@
   PROPRIETÁRIO: Mauricio Spark
   MARCA:        SparkMauricio
   PROJETO:      Burég
-  VERSÃO:       v1.4.2
+  VERSÃO:       v1.4.3
   LINHAGEM:     SPARK
   ============================================================================
   Documento de Planejamento de Escopo
