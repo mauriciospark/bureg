@@ -1,6 +1,6 @@
 {
   "meta": {
-    "versao": "1.4.2",
+    "versao": "1.4.4",
     "nome": "Burég",
     "descricao": "Sistema de gerenciamento de transporte fluvial para produtos agrícolas",
     "proprietario": "Mauricio Spark",
@@ -140,7 +140,7 @@
     "configuracoes": []
   },
   "sistema": {
-    "versao": "1.4.2",
+    "versao": "1.4.4",
     "locale": "pt-BR",
     "moeda": "BRL",
     "formatoData": "DD/MM/YYYY HH:mm:ss",

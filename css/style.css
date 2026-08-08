@@ -3,7 +3,7 @@
   PROPRIETÁRIO: Mauricio Spark
   MARCA:        SparkMauricio
   PROJETO:      Burég
-  VERSÃO:       v1.4.3
+  VERSÃO:       v1.4.4
   LINHAGEM:     SPARK
   ============================================================================
   Documento de Planejamento de Escopo
@@ -576,6 +576,8 @@ textarea:focus {
     justify-content: center;
     border-radius: 50%;
     transition: background 0.2s;
+    position: relative;
+    z-index: 10;
 }
 
 .modal-close:hover {
@@ -918,6 +920,8 @@ textarea:focus {
     justify-content: center;
     border-radius: 50%;
     transition: background 0.2s;
+    position: relative;
+    z-index: 10;
 }
 
 .modal-close:hover {

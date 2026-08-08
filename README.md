@@ -7,7 +7,7 @@ Sistema de gerenciamento de transporte fluvial para produtos agrícolas da regi�
 O Burég é uma aplicação web Local-First projetada para gerenciar o transporte fluvial de produtos agrícolas, oferecendo controle total sobre cargas, cálculos financeiros em tempo real e regras específicas de transporte para produtos como banana, farinha, açaí e cará. O sistema resolve o problema da falta de organização e controle no transporte fluvial, proporcionando eficiência e confiabilidade para produtores e transportadores da região amazônica.
 
 ### Versão Atual
-**v1.4.3** (2026-08-08) - Correções PWA e Manifest
+**v1.4.4** (2026-08-08) - Correções de Modal e UI
 
 ## 🛠 Stack
 
@@ -232,7 +232,7 @@ Desenvolvido como parte da Linhagem SPARK, trazendo soluções tecnológicas par
 
 ---
 
-**Versão**: v1.4.3  
+**Versão**: v1.4.4  
 **Status**: ✅ Ativo e em desenvolvimento  
 **Linhagem**: SPARK  
 **Licença**: MIT

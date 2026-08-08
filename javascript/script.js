@@ -3,7 +3,7 @@
   PROPRIETÁRIO: Mauricio Spark
   MARCA:        SparkMauricio
   PROJETO:      Burég
-  VERSÃO:       v1.4.3
+  VERSÃO:       v1.4.4
   LINHAGEM:     SPARK
   ============================================================================
   Documento de Planejamento de Escopo
@@ -129,7 +129,7 @@ function saveToMemory() {
         if (!memoryData) {
             memoryData = {
                 meta: {
-                    versao: "1.4.2",
+                    versao: "1.4.4",
                     nome: "Burég",
                     descricao: "Sistema de gerenciamento de transporte fluvial para produtos agrícolas",
                     proprietario: "Mauricio Spark",
@@ -157,7 +157,7 @@ function saveToMemory() {
                     configuracoes: []
                 },
                 sistema: {
-                    versao: "1.4.2",
+                    versao: "1.4.4",
                     locale: "pt-BR",
                     moeda: "BRL",
                     formatoData: "DD/MM/YYYY HH:mm:ss",
@@ -294,34 +294,6 @@ function updatePrecoFields(produto, subtype = null) {
     document.getElementById('precoVenda').value = venda || '';
 }
 
-document.getElementById('configBtn').addEventListener('click', function () {
-    const fields = [
-        ['configResponsavel', responsavelPersonalizado],
-        ['configPingueloCompra', priceConfig.banana.pinguelo.compra],
-        ['configPingueloVenda', priceConfig.banana.pinguelo.venda],
-        ['configFilerCompra', priceConfig.banana.filer.compra],
-        ['configFilerVenda', priceConfig.banana.filer.venda],
-        ['configFerraoCompra', priceConfig.banana.ferrao.compra],
-        ['configFerraoVenda', priceConfig.banana.ferrao.venda],
-        ['configMediaCompra', priceConfig.banana.media.compra],
-        ['configMediaVenda', priceConfig.banana.media.venda],
-        ['configFarinhaBananaCompra', priceConfig.farinhaBanana.compra],
-        ['configFarinhaBananaVenda', priceConfig.farinhaBanana.venda],
-        ['configSacoAciaCompra', priceConfig.sacoAcai.compra],
-        ['configSacoAciaVenda', priceConfig.sacoAcai.venda],
-        ['configSacoCaraCompra', priceConfig.sacoCara.compra],
-        ['configSacoCaraVenda', priceConfig.sacoCara.venda],
-        ['configSacoFarinhaCompra', priceConfig.sacoFarinha.compra],
-        ['configSacoFarinhaVenda', priceConfig.sacoFarinha.venda]
-    ];
-
-    fields.forEach(([id, value]) => document.getElementById(id).value = value || '');
-    document.getElementById('configModal').classList.remove('hidden');
-});
-
-document.getElementById('closeConfigModal').addEventListener('click', () => document.getElementById('configModal').classList.add('hidden'));
-document.getElementById('cancelConfig').addEventListener('click', () => document.getElementById('configModal').classList.add('hidden'));
-
 document.getElementById('configForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -361,8 +333,9 @@ document.getElementById('configForm').addEventListener('submit', function (e) {
     };
 
     saveToMemory();
-    document.getElementById('configModal').classList.add('hidden');
-    alert('Configuração salva com sucesso!');
+    const modal = document.getElementById('configModal');
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
 });
 
 document.getElementById('produto').addEventListener('change', function () {
@@ -823,4 +796,44 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadFromMemory();
     renderTransportes();
     updateSummary();
+
+    // Configurar botão de configuração
+    document.getElementById('configBtn').addEventListener('click', function () {
+        alert('Botão de configuração clicado!');
+        const fields = [
+            ['configResponsavel', responsavelPersonalizado],
+            ['configPingueloCompra', priceConfig.banana.pinguelo.compra],
+            ['configPingueloVenda', priceConfig.banana.pinguelo.venda],
+            ['configFilerCompra', priceConfig.banana.filer.compra],
+            ['configFilerVenda', priceConfig.banana.filer.venda],
+            ['configFerraoCompra', priceConfig.banana.ferrao.compra],
+            ['configFerraoVenda', priceConfig.banana.ferrao.venda],
+            ['configMediaCompra', priceConfig.banana.media.compra],
+            ['configMediaVenda', priceConfig.banana.media.venda],
+            ['configFarinhaBananaCompra', priceConfig.farinhaBanana.compra],
+            ['configFarinhaBananaVenda', priceConfig.farinhaBanana.venda],
+            ['configSacoAciaCompra', priceConfig.sacoAcai.compra],
+            ['configSacoAciaVenda', priceConfig.sacoAcai.venda],
+            ['configSacoCaraCompra', priceConfig.sacoCara.compra],
+            ['configSacoCaraVenda', priceConfig.sacoCara.venda],
+            ['configSacoFarinhaCompra', priceConfig.sacoFarinha.compra],
+            ['configSacoFarinhaVenda', priceConfig.sacoFarinha.venda]
+        ];
+
+        fields.forEach(([id, value]) => document.getElementById(id).value = value || '');
+        const modal = document.getElementById('configModal');
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+    });
+
+    document.getElementById('closeConfigModal').addEventListener('click', () => {
+        const modal = document.getElementById('configModal');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    });
+    document.getElementById('cancelConfig').addEventListener('click', () => {
+        const modal = document.getElementById('configModal');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    });
 });

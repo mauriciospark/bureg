@@ -5,6 +5,30 @@ Todas as notáveis mudanças adicionadas ao projeto Burég serão documentadas n
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.4] - 2026-08-08
+
+### Fixed
+- **Modal de Configuração** - Corrigido problema onde o modal de configuração não aparecia ao clicar no botão
+- **Event Listeners Timing** - Movidos event listeners do botão de configuração para dentro do DOMContentLoaded
+- **Modal Display Logic** - Adicionado controle direto de style.display para garantir visibilidade do modal
+- **Modal Close Button** - Adicionado z-index ao botão de fechar modal para garantir clicabilidade
+- **HTML Merge Conflict** - Removido conflito de merge duplicado no arquivo index.html
+- **Manifest Path** - Corrigido start_url de "../index.html" para "index.html" no manifest.json
+
+### Changed
+- **UX de Configuração** - Removido alert de confirmação desnecessário ao salvar configurações
+- **Modal Behavior** - Modal agora fecha automaticamente sem alerta ao salvar
+- **Initialization Order** - Event listeners agora são registrados apenas após DOM estar completamente carregado
+
+### Technical Details
+- **Event Listeners**: Movidos para dentro de DOMContentLoaded para garantir disponibilidade de elementos
+- **Modal Display**: Usa style.display = 'flex' para forçar visibilidade além da classe CSS
+- **Z-Index**: Adicionado position: relative e z-index: 10 ao .modal-close
+- **Manifest**: start_url corrigido para caminho relativo correto
+- **Version**: v1.4.4 com correções de UI/UX
+
+---
+
 ## [1.4.3] - 2026-08-08
 
 ### Fixed

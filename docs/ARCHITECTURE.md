@@ -248,7 +248,7 @@ async function loadFromMemory() {
 ```json
 {
   "meta": {
-    "versao": "1.4.2",
+    "versao": "1.4.4",
     "nome": "Burég",
     "proprietario": "Mauricio Spark",
     "responsavelPersonalizado": "",
@@ -267,7 +267,7 @@ async function loadFromMemory() {
     "configuracoes": []
   },
   "sistema": {
-    "versao": "1.4.2",
+    "versao": "1.4.4",
     "locale": "pt-BR",
     "moeda": "BRL"
   }
@@ -622,6 +622,6 @@ items.forEach(item => {
 
 ---
 
-**Última Atualização**: v1.4.3 (2026-08-08)
+**Última Atualização**: v1.4.4 (2026-08-08)
 **Arquitetura Atual**: Local-First + Vanilla JS + HTML Templates + PWA
 **Princípio Principal**: Separação completa entre estrutura, estilo e comportamento
