@@ -7,7 +7,7 @@ Sistema de gerenciamento de transporte fluvial para produtos agrícolas da regi�
 O Burég é uma aplicação web Local-First projetada para gerenciar o transporte fluvial de produtos agrícolas, oferecendo controle total sobre cargas, cálculos financeiros em tempo real e regras específicas de transporte para produtos como banana, farinha, açaí e cará. O sistema resolve o problema da falta de organização e controle no transporte fluvial, proporcionando eficiência e confiabilidade para produtores e transportadores da região amazônica.
 
 ### Versão Atual
-**v1.4.4** (2026-08-08) - Correções de Modal e UI
+**v1.4.5** (2026-08-10) - Funcionalidades Avançadas e Correções
 
 ## 🛠 Stack
 
@@ -38,27 +38,34 @@ O Burég é uma aplicação web Local-First projetada para gerenciar o transport
 - **🍌 Tipos de Produtos** - Suporte a banana (com subtipos: pinguelo, filer, ferrão, média), farinha, farinha de banana, açaí e cará
 - **📋 Regras de Transporte** - Orientações específicas para cada produto (temperatura, embalagem, cuidados especiais)
 - **✏️ Edição e Exclusão** - Modificação e remoção de cargas cadastradas
-- **🔍 Filtros e Busca** - Filtragem por tipo de produto e busca por nome/subtipo
-- **📊 Ordenação** - Ordenação por data, lucro ou nome (ascendente/descendente)
+- **🔍 Filtros Avançados** - Filtragem por tipo de produto, período (hoje, semana, mês, ano), lucro (positivo/negativo) e quantidade
+- **🔎 Busca Otimizada** - Busca por nome/subtipo com debounce para melhor performance
+- **📊 Ordenação** - Ordenação por data, lucro, quantidade ou nome (ascendente/descendente)
 
 ### Financeiro
 - **💰 Cálculos Financeiros** - Preview em tempo real de investimento, retorno previsto e lucro líquido
 - **📊 Resumo Financeiro** - Painel com totais de investimento, retorno, lucro e quantidade de cargas
 - **⚙️ Configuração de Preços** - Definição de preços padrão por produto e subtipo
 - **👤 Personalização** - Nome do responsável personalizado para comprovantes
+- **🧾 Comprovante de Venda** - Sistema completo com dados do cliente, métodos de pagamento e descontos
+- **📈 Dashboard de Estatísticas** - Gráficos de distribuição de produtos e análise de lucro por categoria
 
 ### Persistência e Exportação
 - **💾 Persistência Local** - Dados salvos automaticamente no navegador (LocalStorage)
-- **📤 Exportação** - Exportação de dados em formato JSON para backup
-- **📥 Importação** - Importação de dados de backup JSON
-- **📋 Comprovantes** - Geração de comprovantes detalhados em formato A4 para impressão
+- **📤 Exportação JSON** - Exportação de dados em formato JSON para backup completo
+- **📥 Importação JSON** - Importação de dados de backup JSON
+- **📋 Exportação CSV** - Exportação de dados em formato CSV para Excel/planilhas
+- **🧾 Comprovantes** - Geração de comprovantes detalhados em formato A4 para impressão
+- **💾 Backup Automático** - Backups diários automáticos com retenção de 7 dias
+- **🔄 Gerenciamento de Backups** - Interface para restaurar e excluir backups
 
 ### Interface e UX
-- **📱 Design Responsivo** - Interface adaptada para diferentes tamanhos de tela
-- **🎨 Interface Intuitiva** - Design moderno com gradientes e cores que facilitam a identificação visual
-- **⚡ Performance** - Sistema otimizado com arquitetura de templates e acesso direto ao DOM
-- **🎯 Validações** - Validação de formulários com feedback visual de erros e avisos
-- **♿ Acessibilidade** - Suporte a navegação por teclado e leitores de tela
+- **📱 Design Responsivo** - Interface adaptada para todos os tamanhos de tela com layout mobile otimizado
+- **🎨 Interface Intuitiva** - Design moderno com gradientes animados e cores para identificação visual
+- **⚡ Performance Otimizada** - Sistema com memoização, event delegation e lazy loading de modals
+- **🎯 Validações Avançadas** - Validação de formulários com feedback visual detalhado e avisos de margem baixa
+- **♿ Acessibilidade** - Suporte completo a leitores de tela, navegação por teclado, alto contraste e movimento reduzido
+- **🖨️ Impressão Otimizada** - Estilos específicos para impressão com logo e formatação profissional
 
 ## 🏗️ Arquitetura
 
@@ -74,11 +81,11 @@ O Burég utiliza uma arquitetura moderna de **HTML Templates** para separação 
 ### Estrutura de Arquivos
 ```
 burég/
-├── index.html              # HTML principal com templates (433 linhas)
+├── index.html              # HTML principal com templates (600+ linhas)
 ├── css/
-│   └── style.css          # Estilos (1034 linhas)
+│   └── style.css          # Estilos (1900+ linhas)
 ├── javascript/
-│   └── script.js          # Lógica JavaScript (826 linhas)
+│   └── script.js          # Lógica JavaScript (1474 linhas)
 ├── favicon/
 │   ├── manifest.json      # Configuração PWA
 │   ├── logo.jpg           # Logo da aplicação
@@ -103,8 +110,14 @@ burég/
 - **`#rulesTemplate`** - Template para regras de transporte
 - **`#transportItemTemplate`** - Template para itens da lista de transportes
 - **`#messageTemplate`** - Template para mensagens (erro/aviso/sucesso)
-- **`#certificateTemplate`** - Template para comprovantes
-- **`#emptyCertificateTemplate`** - Template para estado vazio
+- **`#certificateTemplate`** - Template para comprovantes de cargas
+- **`#emptyCertificateTemplate`** - Template para estado vazio de comprovantes
+- **`#salesReceiptTemplate`** - Template para comprovantes de venda
+- **`#emptySalesReceiptTemplate`** - Template para estado vazio de comprovantes de venda
+- **`#statsTemplate`** - Template para dashboard de estatísticas
+- **`#emptyStatsTemplate`** - Template para estado vazio de estatísticas
+- **`#backupTemplate`** - Template para gerenciamento de backups
+- **`#emptyBackupTemplate`** - Template para estado vazio de backups
 
 ## 🚀 Como Rodar
 
@@ -138,7 +151,11 @@ burég/
    - Visualize o resumo financeiro em tempo real
    - Configure preços padrão via ⚙️ Configurar Preços
    - Filtre e busque cargas conforme necessário
-   - Gere comprovantes via 📋 Comprovante
+   - Gere comprovantes de cargas via 📋 Comprovante de Cargas
+   - Gere comprovantes de venda via 🧾 Comprovante de Venda
+   - Visualize estatísticas via 📊 Estatísticas
+   - Gerencie backups via 💾 Gerenciar Backups
+   - Exporte dados via 📤 Exportar CSV
 
 ### Desenvolvimento
 
@@ -180,15 +197,28 @@ Para modificações no código:
 
 ### Performance
 - **Carregamento**: <1s em conexões 3G
-- **Bundle Size**: ~150KB total (HTML + CSS + JS)
+- **Bundle Size**: ~250KB total (HTML + CSS + JS)
 - **First Contentful Paint**: <500ms
 - **Time to Interactive**: <1s
+- **Memoização**: Cache de resultados para operações caras
+- **Event Delegation**: Single event listener para múltiplos elementos
+- **Lazy Loading**: Modals carregados sob demanda
 
 ### Segurança
 - **Local-First**: Dados nunca saem do dispositivo
 - **Zero Tracking**: Sem telemetria ou analytics
 - **XSS Protection**: Templates HTML estáticos previnem injeção
 - **Input Validation**: Validação rigorosa de todos os formulários
+- **Backup Automático**: Backups diários com retenção de 7 dias
+
+### Acessibilidade
+- **Skip Links**: Links para pular navegação
+- **ARIA Labels**: Rótulos descritivos para elementos interativos
+- **Navegação por Teclado**: Suporte completo a tabulação e atalhos
+- **Leitores de Tela**: Estrutura semântica compatível
+- **Alto Contraste**: Suporte a temas de alto contraste
+- **Movimento Reduzido**: Respeita preferências de movimento reduzido
+- **Focus States**: Estados de foco visíveis e claros
 
 ### Compatibilidade
 - **Browsers**: Chrome, Firefox, Edge, Safari (versões modernas)

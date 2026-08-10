@@ -12,6 +12,8 @@ O Burég adota uma arquitetura **Local-First** com design **Vanilla JS** e **HTM
 4. **Template-Based Architecture**: Separação completa entre estrutura HTML e lógica JavaScript
 5. **Progressive Enhancement**: Funcionalidade básica garantida, recursos avançados adicionais
 6. **Privacy by Design**: Arquitetura construída em torno da privacidade dos dados
+7. **Performance First**: Memoização, event delegation e lazy loading para otimização
+8. **Accessibility First**: Suporte completo a leitores de tela e navegação por teclado
 
 ## 📊 Estrutura de Camadas
 
@@ -120,8 +122,121 @@ function renderTransporte(transporte) {
 - Controle de regras específicas por produto
 - **Acesso direto ao DOM quando necessário**
 - **Zero variáveis DOM intermediárias**
+- **Event delegation para performance**
+- **Memoização de operações caras**
 
 **Módulos Principais:**
+
+#### Performance Optimization Module
+```javascript
+// Memoização de operações caras
+const memoize = (fn) => {
+    const cache = new Map();
+    return (...args) => {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) return cache.get(key);
+        const result = fn(...args);
+        cache.set(key, result);
+        return result;
+    };
+};
+
+// Event delegation para buttons dinâmicos
+const setupEventDelegation = () => {
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-edit')) {
+            editTransporte(parseInt(e.target.closest('.btn-edit').dataset.id));
+        }
+        if (e.target.closest('.btn-delete')) {
+            deleteTransporte(parseInt(e.target.closest('.btn-delete').dataset.id));
+        }
+        if (e.target.closest('.btn-receipt')) {
+            openSalesReceiptForm(parseInt(e.target.closest('.btn-receipt').dataset.id));
+        }
+    });
+};
+
+// Debounce para busca otimizada
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+```
+
+#### Backup System Module
+```javascript
+// Backup automático diário
+function createAutoBackup() {
+    const backupKey = `bureg_backup_${new Date().toISOString().split('T')[0]}`;
+    const backupData = {
+        timestamp: new Date().toISOString(),
+        data: memoryData
+    };
+    localStorage.setItem(backupKey, JSON.stringify(backupData));
+    
+    // Manter apenas últimos 7 dias
+    const keys = Object.keys(localStorage).filter(key => key.startsWith('bureg_backup_'));
+    if (keys.length > 7) {
+        keys.sort().reverse().slice(7).forEach(key => localStorage.removeItem(key));
+    }
+}
+
+// Restauração de backup
+function restoreFromBackup(backupDate) {
+    const backupKey = `bureg_backup_${backupDate}`;
+    const backupData = localStorage.getItem(backupKey);
+    
+    if (backupData) {
+        const parsed = JSON.parse(backupData);
+        memoryData = parsed.data;
+        transportes = memoryData.dados.transportes || [];
+        priceConfig = memoryData.configuracao.precos || priceConfig;
+        saveToMemory();
+        renderTransportes();
+        updateSummary();
+    }
+}
+```
+
+#### Sales Receipt Module
+```javascript
+// Geração de comprovante de venda
+function generateSalesReceipt(transporteId, customerData) {
+    const transporte = transportes.find(t => t.id === transporteId);
+    const discount = customerData?.discount ? parseFloat(customerData.discount) : 0;
+    const totalComDesconto = transporte.retorno - discount;
+    const lucroComDesconto = totalComDesconto - transporte.investimento;
+    
+    // Processar dados do cliente e pagamento
+    const paymentMethods = {
+        'dinheiro': '💵 Dinheiro',
+        'pix': '📱 PIX',
+        'cartao_credito': '💳 Cartão de Crédito',
+        // ... outros métodos
+    };
+    
+    // Gerar comprovante usando template
+    const template = document.getElementById('salesReceiptTemplate');
+    const clone = template.content.cloneNode(true);
+    
+    // Preencher dados do cliente
+    clone.querySelector('.receipt-customer-name').textContent = customerData?.name || 'Não informado';
+    clone.querySelector('.receipt-payment-method').textContent = paymentMethods[customerData?.paymentMethod];
+    
+    // Preencher dados financeiros com desconto
+    clone.querySelector('.receipt-discount').textContent = discount > 0 ? `- R$ ${discount.toFixed(2)}` : 'R$ 0,00';
+    clone.querySelector('.receipt-total-venda').textContent = `R$ ${totalComDesconto.toFixed(2)}`;
+    
+    return clone;
+}
+```
 
 #### Product Rules Module
 ```javascript
@@ -151,14 +266,36 @@ let currentSearch = '';
 #### Validation Module
 ```javascript
 function validateForm(formData) {
+    const errors = [];
+    
     // Valida campos obrigatórios
-    // Verifica consistência de dados
-    // Retorna erros específicos
+    if (!formData.produto) errors.push('Selecione um produto');
+    if (!formData.quantidade || formData.quantidade <= 0) {
+        errors.push('Digite uma quantidade válida maior que zero');
+    }
+    
+    // Validações de negócio
+    if (formData.precoVenda < formData.precoCompra) {
+        errors.push('Preço de venda não pode ser menor que preço de compra');
+    }
+    
+    // Validações de limites
+    if (formData.quantidade > 10000) {
+        errors.push('Quantidade não pode exceder 10.000 unidades');
+    }
+    
+    // Warnings (não bloqueiam submissão)
+    if (formData.precoVenda < formData.precoCompra * 1.1) {
+        showMessage('warning', 'Margem de lucro muito baixa (menos de 10%)');
+    }
+    
+    return errors.length === 0;
 }
 ```
-- Validação de campos de formulário
-- Verificação de tipos e ranges de valores
-- Feedback de erros para o usuário
+- Validação avançada de campos de formulário
+- Verificação de tipos, ranges e consistência de dados
+- Feedback detalhado de erros e avisos de margem baixa
+- Validações de segurança para evitar valores extremos
 
 #### Financial Calculations Module
 ```javascript
@@ -248,11 +385,12 @@ async function loadFromMemory() {
 ```json
 {
   "meta": {
-    "versao": "1.4.4",
+    "versao": "1.4.5",
     "nome": "Burég",
     "proprietario": "Mauricio Spark",
     "responsavelPersonalizado": "",
-    "linhagem": "SPARK"
+    "linhagem": "SPARK",
+    "ultimaAtualizacao": "2026-08-10T10:00:00.000Z"
   },
   "configuracao": {
     "precos": { /* preços configurados */ },
@@ -260,17 +398,57 @@ async function loadFromMemory() {
   },
   "dados": {
     "transportes": [ /* lista de transportes */ ],
-    "estatisticas": { /* totais e métricas */ }
+    "estatisticas": {
+      "totalCargas": 0,
+      "totalInvestimento": 0,
+      "totalRetorno": 0,
+      "totalLucro": 0,
+      "ultimoRegistro": null
+    }
   },
   "historico": {
     "operacoes": [],
     "configuracoes": []
   },
   "sistema": {
-    "versao": "1.4.4",
+    "versao": "1.4.5",
     "locale": "pt-BR",
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "formatoData": "DD/MM/YYYY HH:mm:ss",
+    "timezone": "America/Manaus"
   }
+}
+```
+
+**Sistema de Backup Automático:**
+```javascript
+// Backup diário automático
+function createAutoBackup() {
+    const backupKey = `bureg_backup_${new Date().toISOString().split('T')[0]}`;
+    const backupData = {
+        timestamp: new Date().toISOString(),
+        data: memoryData
+    };
+    localStorage.setItem(backupKey, JSON.stringify(backupData));
+    
+    // Retenção de 7 dias
+    const keys = Object.keys(localStorage).filter(key => key.startsWith('bureg_backup_'));
+    if (keys.length > 7) {
+        keys.sort().reverse().slice(7).forEach(key => localStorage.removeItem(key));
+    }
+}
+
+// Gerenciamento de backups
+function getAvailableBackups() {
+    const keys = Object.keys(localStorage).filter(key => key.startsWith('bureg_backup_'));
+    return keys.map(key => {
+        const backupData = JSON.parse(localStorage.getItem(key));
+        return {
+            date: key.replace('bureg_backup_', ''),
+            timestamp: backupData.timestamp,
+            itemCount: backupData.data?.dados?.transportes?.length || 0
+        };
+    }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 }
 ```
 
@@ -294,6 +472,60 @@ Persistência híbrida (saveToMemory + localStorage)
 Atualização da UI via template clonagem (renderTransportes)
     ↓
 Atualização do resumo financeiro (updateSummary)
+```
+
+### 3. Geração de Comprovante de Venda
+
+```
+Usuário clica no botão de comprovante (🧾)
+    ↓
+Evento capturado via event delegation
+    ↓
+openSalesReceiptForm(transporteId)
+    ↓
+Verificação de existência do transporte
+    ↓
+Reset do formulário de cliente
+    ↓
+Exibição do modal com formulário
+    ↓
+Usuário preenche dados do cliente
+    ↓
+Usuário clica em "Gerar Comprovante"
+    ↓
+Validação dos dados do cliente
+    ↓
+generateSalesReceipt(transporteId, customerData)
+    ↓
+Cálculo de desconto e valores finais
+    ↓
+Clonagem do template de comprovante
+    ↓
+Preenchimento de dados (cliente, produto, financeiro)
+    ↓
+Exibição do comprovante gerado
+    ↓
+Opções: Imprimir, Exportar HTML, Novo Comprovante
+```
+
+### 4. Sistema de Backup Automático
+
+```
+Modificação de dados (saveToMemory)
+    ↓
+createAutoBackup() chamado automaticamente
+    ↓
+Criação de chave com data atual
+    ↓
+Serialização completa da memory
+    ↓
+Armazenamento no localStorage
+    ↓
+Verificação de backups antigos (>7 dias)
+    ↓
+Remoção automática de backups expirados
+    ↓
+Atualização da lista de backups disponíveis
 ```
 
 ### 2. Cálculo em Tempo Real

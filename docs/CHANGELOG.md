@@ -5,6 +5,59 @@ Todas as notáveis mudanças adicionadas ao projeto Burég serão documentadas n
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.5] - 2026-08-10
+
+### Added
+- **Comprovante de Venda Avançado** - Sistema completo de comprovantes com informações do cliente
+- **Dados do Cliente** - Campos para nome, CPF/CNPJ e telefone do cliente
+- **Métodos de Pagamento** - Suporte a múltiplos métodos: dinheiro, PIX, cartões, transferência, boleto
+- **Desconto no Comprovante** - Campo de desconto com cálculo automático do valor final
+- **Exportação para CSV/Excel** - Funcionalidade para exportar dados em formato CSV
+- **Dashboard de Estatísticas** - Painel com gráficos de distribuição de produtos e lucro
+- **Filtros Avançados** - Filtros por período (hoje, semana, mês, ano), lucro (positivo/negativo) e quantidade
+- **Busca com Debounce** - Otimização da busca com debounce para melhor performance
+- **Sistema de Backup Automático** - Backups diários automáticos com retenção de 7 dias
+- **Interface de Gerenciamento de Backups** - Painel para restaurar e excluir backups
+- **Acessibilidade Melhorada** - Skip links, ARIA labels, suporte a alto contraste e movimento reduzido
+- **Design Responsivo Otimizado** - Layout adaptado para mobile com header adaptativo e formulários em coluna única
+- **Performance Otimizada** - Memoização, event delegation, lazy loading de modals
+- **Logo no Comprovante** - Logo da empresa agora aparece no cabeçalho dos comprovantes
+
+### Fixed
+- **Botão de Comprovante** - Corrigido problema onde o botão não abria o formulário de cliente
+- **Header e Logo** - Corrigido layout do header com logo e nome da empresa
+- **Impressão de Comprovante** - Corrigido problema onde a logo não aparecia na impressão
+- **Separação de Responsabilidades** - Removido CSS inline do JavaScript, usando apenas arquivo CSS
+- **Event Delegation** - Implementado event delegation para melhor performance
+- **Modal Display** - Garantido que modais apareçam corretamente com display: flex
+- **String Literal Error** - Corrigido erro de string literal não terminada no JavaScript
+
+### Changed
+- **Arquitetura de Exportação** - Função de exportação agora usa apenas CSS existente, sem CSS inline
+- **Organização de Código** - JavaScript limpo apenas com lógica, CSS separado em arquivo próprio
+- **Experiência Mobile** - Interface mais amigável em dispositivos móveis
+- **Feedback Visual** - Melhorado feedback de mensagens e validações
+
+### Technical Details
+- **JavaScript**: 1700 → 1474 linhas (redução de 226 linhas, 13.3%)
+- **CSS**: 1900+ linhas com estilos avançados e responsivos
+- **HTML**: 600+ linhas com templates e modais
+- **Novos Templates**: Sales receipt, statistics, backup, empty states
+- **Event Delegation**: Implementado para buttons dinâmicos
+- **Memoization**: Funções caras com cache de resultados
+- **Lazy Loading**: Modals carregados sob demanda
+- **Auto Backup**: Backups diários com retenção automática
+- **Versão**: v1.4.5 com funcionalidades completas e correções
+
+### Architecture Improvements
+- **Separação Total**: JavaScript apenas lógica, CSS apenas estilos, HTML apenas estrutura
+- **Performance**: Memoização e event delegation para melhor performance
+- **Manutenibilidade**: Código mais organizado e fácil de manter
+- **Acessibilidade**: Suporte completo a leitores de tela e navegação por teclado
+- **Responsividade**: Interface adaptada para todos os tamanhos de tela
+
+---
+
 ## [1.4.4] - 2026-08-08
 
 ### Fixed
