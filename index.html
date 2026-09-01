@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="pt-BR">
+  <!--
+  ============================================================================
+  PROPRIETÁRIO: Mauricio Spark
+  MARCA:        SparkMauricio
+  PROJETO:      Burég
+  VERSÃO:       v1.4.5
+  LINHAGEM:     SPARK
+  ============================================================================
+  Documento de Planejamento de Escopo
+  COPYRIGHT: © 2026 / Mauricio Spark. Todos os direitos reservados.
+  ============================================================================
+-->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sistema de gerenciamento de transporte fluvial para produtos agrícolas"
+    />
+    <title>Burég</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <meta name="application-name" content="Burég" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="favicon/manifest.json" />
+    <meta name="application-name" content="Burég" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="favicon/manifest.json" />
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link"
+      >Pular para o conteúdo principal</a
+    >
+    <div class="container">
+      <header role="banner">
+        <div class="header-content">
+          <img
+            src="favicon/logo.jpg"
+            alt="Logo Burég"
+            class="logo"
+            width="80"
+            height="80"
+          />
+          <div class="header-text">
+            <h1>Burég</h1>
+            <p>Sistema de Transporte Fluvial</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button
+            class="btn btn-compact"
+            id="configBtn"
+            aria-label="Configurar preços dos produtos"
+            title="Configurar preços padrão"
+          >
+            ⚙️ Preços
+          </button>
+          <button
+            class="btn btn-compact"
+            id="certificateBtn"
+            aria-label="Gerar comprovante de cargas"
+            title="Gerar comprovante de todas as cargas"
+          >
+            📋 Comprovante
+          </button>
+          <button
+            class="btn btn-compact"
+            id="salesReceiptBtn"
+            aria-label="Gerar comprovante de venda"
+            title="Gerar comprovante de venda"
+          >
+            🧾 Venda
+          </button>
+          <div class="header-dropdown">
+            <button
+              class="btn btn-compact dropdown-toggle"
+              id="menuBtn"
+              aria-label="Menu"
+              title="Mais opções"
+            >
+              ☰ Menu
+            </button>
+            <div class="dropdown-menu hidden" id="dropdownMenu">
+              <button class="dropdown-item" id="exportBtn">
+                📤 Exportar Backup
+              </button>
+              <button class="dropdown-item" id="exportCsvBtn">
+                📊 Exportar CSV
+              </button>
+              <button class="dropdown-item" id="backupBtn">
+                💾 Gerenciar Backups
+              </button>
+              <button class="dropdown-item" id="importBtn">
+                📥 Importar Backup
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main
+        class="two-column-layout"
+        id="main-content"
+        role="main"
+        tabindex="-1"
+      >
+        <div class="left-panel">
+          <section class="form-section">
+            <h2>📝 Nova Carga</h2>
+            <form id="transportForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="tipoOperacao">Operação:</label>
+                  <select
+                    id="tipoOperacao"
+                    required
+                    aria-label="Selecione o tipo de operação"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="compra">💰 Compra</option>
+                    <option value="venda">🏪 Venda</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="produto">Produto:</label>
+                  <select
+                    id="produto"
+                    required
+                    aria-label="Selecione o produto"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="banana">🍌 Banana</option>
+                    <option value="farinha">🌾 Farinha</option>
+                    <option value="farinhaBanana">🌾 Farinha de Banana</option>
+                    <option value="acai">🫐 Açaí</option>
+                    <option value="cara">🥕 Cará</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group hidden" id="bananaSubtypeGroup">
+                <label for="bananaSubtype">Tipo de Banana:</label>
+                <select
+                  id="bananaSubtype"
+                  aria-label="Selecione o tipo de banana"
+                >
+                  <option value="pinguelo">🍌 Pinguelo</option>
+                  <option value="filer">🍌 Filer</option>
+                  <option value="ferrao">🍌 Ferrão</option>
+                  <option value="media">🍌 Média</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quantidade">Quantidade:</label>
+                  <input
+                    type="number"
+                    id="quantidade"
+                    min="1"
+                    required
+                    placeholder="0"
+                    aria-label="Quantidade de produtos"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="paradas">Paradas:</label>
+                  <input
+                    type="number"
+                    id="paradas"
+                    min="0"
+                    required
+                    placeholder="0"
+                    aria-label="Número de paradas durante o transporte"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" id="precoCompraGroup">
+                  <label for="precoCompra">💰 Compra (R$):</label>
+                  <input
+                    type="number"
+                    id="precoCompra"
+                    min="0.01"
+                    step="0.01"
+                    required
+                    placeholder="0.00"
+                    aria-label="Preço de compra por unidade"
+                  />
+                </div>
+                <div class="form-group" id="precoVendaGroup">
+                  <label for="precoVenda">🏪 Venda (R$):</label>
+                  <input
+                    type="number"
+                    id="precoVenda"
+                    min="0.01"
+                    step="0.01"
+                    required
+                    placeholder="0.00"
+                    aria-label="Preço de venda por unidade"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="observacoes">Observações:</label>
+                <textarea
+                  id="observacoes"
+                  rows="2"
+                  placeholder="Notas da compra..."
+                  aria-label="Observações sobre a carga"
+                ></textarea>
+              </div>
+
+              <div class="product-info hidden" id="productInfo">
+                <div id="rulesContent"></div>
+              </div>
+
+              <div class="financial-preview hidden" id="financialPreview">
+                <div class="preview-item">
+                  <span>💰 Compra (unidade):</span>
+                  <span id="previewCompraUnitario">R$ 0,00</span>
+                </div>
+                <div class="preview-item">
+                  <span>🏪 Venda (unidade):</span>
+                  <span id="previewVendaUnitario">R$ 0,00</span>
+                </div>
+                <div class="preview-item">
+                  <span>📦 Total Compra:</span>
+                  <span id="previewInvestimento">R$ 0,00</span>
+                </div>
+                <div class="preview-item">
+                  <span>📦 Total Venda:</span>
+                  <span id="previewRetorno">R$ 0,00</span>
+                </div>
+                <div class="preview-item profit">
+                  <span>💵 Lucro Total:</span>
+                  <span id="previewLucro">R$ 0,00</span>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-block"
+                  aria-label="Adicionar nova carga ao sistema"
+                >
+                  ➕ Adicionar Carga
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-block"
+                  id="clearBtn"
+                  aria-label="Limpar o formulário"
+                >
+                  🔄 Limpar
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="right-panel">
+          <section class="list-section">
+            <div class="section-header">
+              <h2>📋 Lista de Cargas</h2>
+              <div class="header-controls">
+                <button
+                  class="btn btn-compact"
+                  id="statsBtn"
+                  aria-label="Ver estatísticas"
+                  title="Ver estatísticas detalhadas"
+                >
+                  📊 Estatísticas
+                </button>
+                <select
+                  id="filterProduct"
+                  aria-label="Filtrar por produto"
+                  title="Filtrar cargas por tipo de produto"
+                >
+                  <option value="all">Todos os Produtos</option>
+                  <option value="banana">🍌 Banana</option>
+                  <option value="farinha">🌾 Farinha</option>
+                  <option value="farinhaBanana">🌾 Farinha de Banana</option>
+                  <option value="acai">🫐 Açaí</option>
+                  <option value="cara">🥕 Cará</option>
+                </select>
+                <input
+                  type="text"
+                  id="searchTransport"
+                  placeholder="🔍 Buscar..."
+                  aria-label="Buscar cargas"
+                  title="Buscar por nome do produto ou tipo"
+                />
+                <button
+                  class="btn btn-compact"
+                  id="toggleFilters"
+                  aria-label="Mais filtros"
+                  title="Mostrar mais filtros"
+                >
+                  ⚙️ Filtros
+                </button>
+                <div class="advanced-filters hidden" id="advancedFilters">
+                  <select
+                    id="filterDateRange"
+                    aria-label="Filtrar por período"
+                    title="Filtrar por período de tempo"
+                  >
+                    <option value="all">Todo o Período</option>
+                    <option value="today">Hoje</option>
+                    <option value="week">Esta Semana</option>
+                    <option value="month">Este Mês</option>
+                    <option value="year">Este Ano</option>
+                  </select>
+                  <select
+                    id="filterProfit"
+                    aria-label="Filtrar por lucro"
+                    title="Filtrar por tipo de lucro"
+                  >
+                    <option value="all">Todos os Lucros</option>
+                    <option value="positive">Apenas Lucrativos</option>
+                    <option value="negative">Apenas Prejuízo</option>
+                  </select>
+                  <select
+                    id="filterOperation"
+                    aria-label="Filtrar por operação"
+                    title="Filtrar por tipo de operação"
+                  >
+                    <option value="all">Todas Operações</option>
+                    <option value="compra">💰 Compras</option>
+                    <option value="venda">🏪 Vendas</option>
+                  </select>
+                  <select
+                    id="sortTransport"
+                    aria-label="Ordenar cargas"
+                    title="Ordenar lista de cargas"
+                  >
+                    <option value="date-desc">Mais Recentes</option>
+                    <option value="date-asc">Mais Antigas</option>
+                    <option value="profit-desc">Maior Lucro</option>
+                    <option value="profit-asc">Menor Lucro</option>
+                    <option value="quantity-desc">Maior Quantidade</option>
+                    <option value="quantity-asc">Menor Quantidade</option>
+                    <option value="name-asc">Nome A-Z</option>
+                    <option value="name-desc">Nome Z-A</option>
+                  </select>
+                  <button
+                    class="btn btn-compact"
+                    id="clearFilters"
+                    aria-label="Limpar filtros"
+                  >
+                    🗑️ Limpar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="transport-list" id="transportList"></div>
+          </section>
+
+          <section class="summary-section">
+            <h2>📊 Resumo Financeiro</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <label>Total de Cargas</label>
+                <span id="totalCargas">0</span>
+              </div>
+              <div class="summary-item">
+                <label>Total Compra</label>
+                <span id="totalInvestimento">R$ 0,00</span>
+              </div>
+              <div class="summary-item">
+                <label>Total Venda</label>
+                <span id="totalRetorno">R$ 0,00</span>
+              </div>
+              <div class="summary-item">
+                <label>Lucro Total</label>
+                <span id="totalLucro">R$ 0,00</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="editModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>✏️ Editar Carga</h3>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <form id="editForm">
+          <input type="hidden" id="editId" />
+          <div class="form-group">
+            <label for="editProduto">Produto:</label>
+            <input type="text" id="editProduto" disabled />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editQuantidade">Quantidade:</label>
+              <input type="number" id="editQuantidade" min="1" required />
+            </div>
+            <div class="form-group">
+              <label for="editParadas">Paradas:</label>
+              <input type="number" id="editParadas" min="0" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editPrecoCompra">Compra (R$):</label>
+              <input
+                type="number"
+                id="editPrecoCompra"
+                min="0.01"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="editPrecoVenda">Venda (R$):</label>
+              <input
+                type="number"
+                id="editPrecoVenda"
+                min="0.01"
+                step="0.01"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editObservacoes">Observações:</label>
+            <textarea id="editObservacoes" rows="2"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              Salvar Alterações
+            </button>
+            <button type="button" class="btn btn-secondary" id="cancelEdit">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="certificateModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📋 Comprovante de Cargas</h3>
+          <button class="modal-close" id="closeCertificateModal">
+            &times;
+          </button>
+        </div>
+        <div class="certificate-body" id="certificateContent"></div>
+        <div class="certificate-actions">
+          <button class="btn btn-primary" id="printCertificate">
+            🖨️ Imprimir
+          </button>
+          <button class="btn btn-secondary" id="closeCertificateBtn">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="backupModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>💾 Gerenciar Backups</h3>
+          <button class="modal-close" id="closeBackupModal">&times;</button>
+        </div>
+        <div class="backup-body" id="backupContent">
+          <!-- Backup content will be generated here -->
+        </div>
+        <div class="backup-actions">
+          <button class="btn btn-secondary" id="closeBackupBtn">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="statsModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📊 Estatísticas e Dashboard</h3>
+          <button class="modal-close" id="closeStatsModal">&times;</button>
+        </div>
+        <div class="stats-body" id="statsContent">
+          <!-- Statistics content will be generated here -->
+        </div>
+        <div class="stats-actions">
+          <button class="btn btn-secondary" id="closeStatsBtn">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="salesReceiptModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🧾 Comprovante de Venda</h3>
+          <button class="modal-close" id="closeSalesReceiptModal">
+            &times;
+          </button>
+        </div>
+        <div class="sales-receipt-form" id="salesReceiptForm">
+          <h4>Informações do Cliente</h4>
+          <div class="form-group">
+            <label for="receiptCustomerName">Nome do Cliente:</label>
+            <input
+              type="text"
+              id="receiptCustomerName"
+              placeholder="Nome completo do cliente"
+              aria-label="Nome do cliente"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="receiptCustomerDoc">CPF/CNPJ:</label>
+              <input
+                type="text"
+                id="receiptCustomerDoc"
+                placeholder="000.000.000-00"
+                aria-label="CPF ou CNPJ do cliente"
+              />
+            </div>
+            <div class="form-group">
+              <label for="receiptCustomerPhone">Telefone:</label>
+              <input
+                type="text"
+                id="receiptCustomerPhone"
+                placeholder="(00) 00000-0000"
+                aria-label="Telefone do cliente"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="receiptPaymentMethod">Método de Pagamento:</label>
+              <select
+                id="receiptPaymentMethod"
+                aria-label="Método de pagamento"
+              >
+                <option value="dinheiro">💵 Dinheiro</option>
+                <option value="pix">📱 PIX</option>
+                <option value="cartao_credito">💳 Cartão de Crédito</option>
+                <option value="cartao_debito">💳 Cartão de Débito</option>
+                <option value="transferencia">🏦 Transferência Bancária</option>
+                <option value="boleto">📄 Boleto</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="receiptDiscount">Desconto (R$):</label>
+              <input
+                type="number"
+                id="receiptDiscount"
+                min="0"
+                step="0.01"
+                value="0"
+                placeholder="0.00"
+                aria-label="Valor do desconto"
+              />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="generateReceiptBtn">
+              🧾 Gerar Comprovante
+            </button>
+            <button class="btn btn-secondary" id="cancelReceiptBtn">
+              Cancelar
+            </button>
+          </div>
+        </div>
+        <div class="sales-receipt-body hidden" id="salesReceiptContent"></div>
+        <div class="sales-receipt-actions hidden" id="salesReceiptActions">
+          <button class="btn btn-primary" id="printSalesReceipt">
+            🖨️ Imprimir
+          </button>
+          <button class="btn btn-secondary" id="exportPdfBtn">
+            📄 Exportar PDF
+          </button>
+          <button class="btn btn-secondary" id="newReceiptBtn">
+            🔄 Novo Comprovante
+          </button>
+          <button class="btn btn-secondary" id="closeSalesReceiptBtn">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="configModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>⚙️ Configurar Preços</h3>
+          <button class="modal-close" id="closeConfigModal">&times;</button>
+        </div>
+        <form id="configForm">
+          <h4>👤 Informações do Responsável</h4>
+          <div class="form-group">
+            <label for="configResponsavel"
+              >Nome do Responsável (para comprovantes):</label
+            >
+            <input
+              type="text"
+              id="configResponsavel"
+              placeholder="Seu nome ou nome da empresa"
+              aria-label="Nome do responsável para comprovantes"
+            />
+          </div>
+
+          <h4>🍌 Tipos de Banana</h4>
+          <div class="form-group">
+            <label for="configPingueloCompra">🍌 Pinguelo - Compra (R$):</label>
+            <input
+              type="number"
+              id="configPingueloCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configPingueloVenda">🍌 Pinguelo - Venda (R$):</label>
+            <input
+              type="number"
+              id="configPingueloVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configFilerCompra">🍌 Filer - Compra (R$):</label>
+            <input
+              type="number"
+              id="configFilerCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configFilerVenda">🍌 Filer - Venda (R$):</label>
+            <input
+              type="number"
+              id="configFilerVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configFerraoCompra">🍌 Ferrão - Compra (R$):</label>
+            <input
+              type="number"
+              id="configFerraoCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configFerraoVenda">🍌 Ferrão - Venda (R$):</label>
+            <input
+              type="number"
+              id="configFerraoVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configMediaCompra">🍌 Média - Compra (R$):</label>
+            <input
+              type="number"
+              id="configMediaCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configMediaVenda">🍌 Média - Venda (R$):</label>
+            <input
+              type="number"
+              id="configMediaVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+
+          <h4>🌾 Farinha de Banana</h4>
+          <div class="form-group">
+            <label for="configFarinhaBananaCompra"
+              >🌾 Farinha de Banana - Compra (R$):</label
+            >
+            <input
+              type="number"
+              id="configFarinhaBananaCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configFarinhaBananaVenda"
+              >🌾 Farinha de Banana - Venda (R$):</label
+            >
+            <input
+              type="number"
+              id="configFarinhaBananaVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+
+          <h4>🫐 Outros Produtos</h4>
+          <div class="form-group">
+            <label for="configSacoAciaCompra"
+              >🫐 Saco de Açaí - Compra (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoAciaCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configSacoAciaVenda"
+              >🫐 Saco de Açaí - Venda (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoAciaVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configSacoCaraCompra"
+              >🥕 Saco de Cará - Compra (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoCaraCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configSacoCaraVenda"
+              >🥕 Saco de Cará - Venda (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoCaraVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configSacoFarinhaCompra"
+              >🌾 Saco de Farinha - Compra (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoFarinhaCompra"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="configSacoFarinhaVenda"
+              >🌾 Saco de Farinha - Venda (R$):</label
+            >
+            <input
+              type="number"
+              id="configSacoFarinhaVenda"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              Salvar Configuração
+            </button>
+            <button type="button" class="btn btn-secondary" id="cancelConfig">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none" />
+
+    <!-- Templates -->
+    <template id="rulesTemplate">
+      <h4>📋 Regras de Transporte:</h4>
+      <ul></ul>
+    </template>
+
+    <template id="transportItemTemplate">
+      <div class="transport-item-compact">
+        <div class="compact-header">
+          <div class="compact-title">
+            <span class="compact-icon"></span>
+            <span class="compact-name"></span>
+            <span class="compact-operation"></span>
+          </div>
+          <div class="compact-date"></div>
+        </div>
+        <div class="compact-details">
+          <div class="compact-detail">
+            <span>📦 Quantidade:</span><span></span>
+          </div>
+          <div class="compact-detail">
+            <span>🛑 Paradas:</span><span></span>
+          </div>
+          <div class="compact-detail"><span>💰 Compra:</span><span></span></div>
+          <div class="compact-detail"><span>🏪 Venda:</span><span></span></div>
+          <div class="compact-detail">
+            <span>📦 Total Compra:</span><span></span>
+          </div>
+          <div class="compact-detail">
+            <span>📦 Total Venda:</span><span></span>
+          </div>
+          <div class="financial-item profit">
+            <span>💵 Lucro Total:</span><span></span>
+          </div>
+        </div>
+        <div class="compact-subtype"></div>
+        <div class="compact-observacoes"></div>
+        <div class="compact-actions">
+          <button
+            class="btn-compact btn-receipt"
+            aria-label="Gerar comprovante de venda"
+          >
+            🧾
+          </button>
+          <button class="btn-compact btn-edit" aria-label="Editar carga">
+            ✏️
+          </button>
+          <button class="btn-compact btn-delete" aria-label="Excluir carga">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </template>
+
+    <template id="messageTemplate">
+      <div class="message" role="alert">
+        <span></span>
+        <span></span>
+      </div>
+    </template>
+
+    <template id="certificateTemplate">
+      <div class="certificate-header">
+        <div class="certificate-logo-section">
+          <img
+            src="favicon/logo.jpg"
+            alt="Logo Burég"
+            class="certificate-logo"
+          />
+          <div class="certificate-company-info">
+            <h2>📋 COMPROVANTE DE CARGAS</h2>
+            <p><strong>Burég - Sistema de Transporte Fluvial</strong></p>
+            <p>Responsável: <span></span> | Linhagem: SPARK</p>
+          </div>
+        </div>
+      </div>
+      <div class="certificate-info">
+        <div class="certificate-info-item">
+          <label>Data de Emissão:</label><span></span>
+        </div>
+        <div class="certificate-info-item">
+          <label>Total de Cargas:</label><span></span>
+        </div>
+        <div class="certificate-info-item">
+          <label>Período:</label><span></span>
+        </div>
+      </div>
+      <table class="certificate-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Compra (un)</th>
+            <th>Total Compra</th>
+            <th>Venda (un)</th>
+            <th>Total Venda</th>
+            <th>Lucro</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="certificate-summary">
+        <div class="summary-item">
+          <label>Total Compra:</label><span class="money"></span>
+        </div>
+        <div class="summary-item">
+          <label>Total Venda:</label><span class="money"></span>
+        </div>
+        <div class="summary-item">
+          <label>Lucro Total:</label><span class="money"></span>
+        </div>
+      </div>
+      <div class="certificate-footer">
+        <p>
+          Este documento serve como comprovante oficial de transporte fluvial.
+        </p>
+        <p>Gerado automaticamente pelo sistema Burég - <span></span></p>
+      </div>
+    </template>
+
+    <template id="emptyCertificateTemplate">
+      <div class="empty-certificate">
+        <div class="empty-certificate-icon">📋</div>
+        <h3>Nenhuma carga cadastrada</h3>
+        <p>Cadastre produtos para gerar o comprovante.</p>
+      </div>
+    </template>
+
+    <template id="salesReceiptTemplate">
+      <div class="sales-receipt-header">
+        <div class="receipt-logo-section">
+          <img src="favicon/logo.jpg" alt="Logo Burég" class="receipt-logo" />
+          <div class="receipt-company-info">
+            <h2>🧾 COMPROVANTE DE VENDA</h2>
+            <p><strong>Burég - Sistema de Transporte Fluvial</strong></p>
+            <p>
+              Responsável: <span class="receipt-responsavel"></span> | Linhagem:
+              SPARK
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="sales-receipt-info">
+        <div class="receipt-info-item">
+          <label>Número da Venda:</label><span class="receipt-number"></span>
+        </div>
+        <div class="receipt-info-item">
+          <label>Data de Emissão:</label><span class="receipt-date"></span>
+        </div>
+        <div class="receipt-info-item">
+          <label>Data da Carga:</label><span class="receipt-carga-date"></span>
+        </div>
+      </div>
+      <div class="sales-receipt-customer">
+        <h3>Informações do Cliente</h3>
+        <div class="receipt-customer-details">
+          <div class="receipt-customer-row">
+            <label>Cliente:</label><span class="receipt-customer-name"></span>
+          </div>
+          <div class="receipt-customer-row">
+            <label>CPF/CNPJ:</label><span class="receipt-customer-doc"></span>
+          </div>
+          <div class="receipt-customer-row">
+            <label>Telefone:</label><span class="receipt-customer-phone"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sales-receipt-product">
+        <h3>Detalhes do Produto</h3>
+        <div class="receipt-product-details">
+          <div class="receipt-detail-row">
+            <label>Produto:</label><span class="receipt-product-name"></span>
+          </div>
+          <div class="receipt-detail-row">
+            <label>Quantidade:</label><span class="receipt-quantity"></span>
+          </div>
+          <div class="receipt-detail-row">
+            <label>Paradas:</label><span class="receipt-paradas"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sales-receipt-financial">
+        <h3>Detalhes Financeiros</h3>
+        <div class="receipt-financial-row">
+          <label>Preço de Compra (unidade):</label>
+          <span class="receipt-preco-compra"></span>
+        </div>
+        <div class="receipt-financial-row">
+          <label>Preço de Venda (unidade):</label>
+          <span class="receipt-preco-venda"></span>
+        </div>
+        <div class="receipt-financial-row discount">
+          <label>Desconto:</label>
+          <span class="receipt-discount"></span>
+        </div>
+        <div class="receipt-financial-row total">
+          <label>Total Investimento:</label>
+          <span class="receipt-total-compra"></span>
+        </div>
+        <div class="receipt-financial-row total">
+          <label>Total Retorno:</label>
+          <span class="receipt-total-venda"></span>
+        </div>
+        <div class="receipt-financial-row payment">
+          <label>Método de Pagamento:</label>
+          <span class="receipt-payment-method"></span>
+        </div>
+        <div class="receipt-financial-row profit">
+          <label>Lucro da Venda:</label>
+          <span class="receipt-lucro"></span>
+        </div>
+      </div>
+      <div class="sales-receipt-observations">
+        <h3>Observações</h3>
+        <p class="receipt-observacoes"></p>
+      </div>
+      <div class="sales-receipt-footer">
+        <p>Este documento serve como comprovante oficial de venda.</p>
+        <p>
+          Gerado automaticamente pelo sistema Burég -
+          <span class="receipt-generation-date"></span>
+        </p>
+      </div>
+    </template>
+
+    <template id="backupTemplate">
+      <div class="backup-dashboard">
+        <div class="backup-info">
+          <h4>📋 Backups Disponíveis</h4>
+          <p class="backup-description">
+            Backups automáticos são criados diariamente. Os 7 últimos backups
+            são mantidos.
+          </p>
+        </div>
+        <div class="backup-list" id="backupList">
+          <!-- Backup items will be generated here -->
+        </div>
+      </div>
+    </template>
+
+    <template id="emptyBackupTemplate">
+      <div class="empty-backup">
+        <div class="empty-backup-icon">💾</div>
+        <h3>Nenhum backup disponível</h3>
+        <p>
+          Os backups automáticos serão criados quando você adicionar cargas.
+        </p>
+      </div>
+    </template>
+
+    <template id="statsTemplate">
+      <div class="stats-dashboard">
+        <div class="stats-overview">
+          <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-info">
+              <h4>Total de Cargas</h4>
+              <p class="stat-value" id="statTotalCargas">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-info">
+              <h4>Investimento Total</h4>
+              <p class="stat-value" id="statTotalInvestimento">R$ 0,00</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏪</div>
+            <div class="stat-info">
+              <h4>Retorno Total</h4>
+              <p class="stat-value" id="statTotalRetorno">R$ 0,00</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💵</div>
+            <div class="stat-info">
+              <h4>Lucro Total</h4>
+              <p class="stat-value" id="statTotalLucro">R$ 0,00</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-charts">
+          <div class="chart-section">
+            <h4>📈 Distribuição por Produto</h4>
+            <div class="chart-container" id="productChart"></div>
+          </div>
+          <div class="chart-section">
+            <h4>📊 Lucro por Produto</h4>
+            <div class="chart-container" id="profitChart"></div>
+          </div>
+        </div>
+
+        <div class="stats-details">
+          <h4>📋 Detalhes por Produto</h4>
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Investimento</th>
+                <th>Retorno</th>
+                <th>Lucro</th>
+                <th>Margem %</th>
+              </tr>
+            </thead>
+            <tbody id="statsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </template>
+
+    <template id="emptyStatsTemplate">
+      <div class="empty-stats">
+        <div class="empty-stats-icon">📊</div>
+        <h3>Sem dados para estatísticas</h3>
+        <p>Cadastre cargas para ver as estatísticas.</p>
+      </div>
+    </template>
+
+    <template id="emptySalesReceiptTemplate">
+      <div class="empty-sales-receipt">
+        <div class="empty-sales-receipt-icon">🧾</div>
+        <h3>Nenhuma carga selecionada</h3>
+        <p>Selecione uma carga para gerar o comprovante de venda.</p>
+      </div>
+    </template>
+
+    <script src="javascript/script.js"></script>
+  </body>
+</html>

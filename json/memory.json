@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "versao": "1.4.5",
+    "nome": "Burég",
+    "descricao": "Sistema de gerenciamento de transporte fluvial para produtos agrícolas",
+    "proprietario": "Mauricio Spark",
+    "responsavelPersonalizado": "",
+    "linhagem": "SPARK",
+    "ultimaAtualizacao": "2026-08-10",
+    "dataCriacao": "2026-08-07"
+  },
+  "configuracao": {
+    "precos": {
+      "banana": {
+        "pinguelo": {
+          "compra": 0.00,
+          "venda": 0.00,
+          "descricao": "Banana tipo Pinguelo"
+        },
+        "filer": {
+          "compra": 0.00,
+          "venda": 0.00,
+          "descricao": "Banana tipo Filer"
+        },
+        "ferrao": {
+          "compra": 0.00,
+          "venda": 0.00,
+          "descricao": "Banana tipo Ferrão"
+        },
+        "media": {
+          "compra": 0.00,
+          "venda": 0.00,
+          "descricao": "Banana tipo Média"
+        }
+      },
+      "farinhaBanana": {
+        "compra": 0.00,
+        "venda": 0.00,
+        "descricao": "Farinha de Banana"
+      },
+      "sacoAcai": {
+        "compra": 0.00,
+        "venda": 0.00,
+        "descricao": "Saco de Açaí"
+      },
+      "sacoCara": {
+        "compra": 0.00,
+        "venda": 0.00,
+        "descricao": "Saco de Cará"
+      },
+      "sacoFarinha": {
+        "compra": 0.00,
+        "venda": 0.00,
+        "descricao": "Saco de Farinha"
+      }
+    },
+    "regrasProdutos": {
+      "banana": {
+        "nome": "Banana",
+        "icone": "🍌",
+        "regras": [
+          "Temperatura ambiente durante o transporte",
+          "Transportar em saco de fibra",
+          "A cada parada, acrescentar mais bananas",
+          "Não pode ser amassada ou comprimida"
+        ],
+        "subtipos": {
+          "pinguelo": {
+            "nome": "Pinguelo",
+            "icone": "🍌"
+          },
+          "filer": {
+            "nome": "Filer",
+            "icone": "🍌"
+          },
+          "ferrao": {
+            "nome": "Ferrão",
+            "icone": "🍌"
+          },
+          "media": {
+            "nome": "Média",
+            "icone": "🍌"
+          }
+        }
+      },
+      "farinha": {
+        "nome": "Farinha",
+        "icone": "🌾",
+        "regras": [
+          "Transportar em saco de fibra plastificado",
+          "Manter em ambiente quente",
+          "Não pode esfoliar - estraga o produto",
+          "Proteger da umidade excessiva"
+        ]
+      },
+      "farinhaBanana": {
+        "nome": "Farinha de Banana",
+        "icone": "🌾",
+        "regras": [
+          "Transportar em saco de fibra plastificado",
+          "Manter em ambiente seco e ventilado",
+          "Proteger da umidade excessiva",
+          "Não pode ser comprimido"
+        ]
+      },
+      "acai": {
+        "nome": "Açaí",
+        "icone": "🫐",
+        "regras": [
+          "Transportar em saco de fibra normal",
+          "Manter dentro do gelo durante todo o transporte",
+          "Não pode esquentar - perde toda a mercadoria",
+          "Prioridade no transporte devido à perecibilidade"
+        ]
+      },
+      "cara": {
+        "nome": "Cara",
+        "icone": "🥕",
+        "regras": [
+          "Transportar dentro de sapos",
+          "Manter ventilado durante o transporte",
+          "Não pode ser comprimido ou amassado",
+          "Proteger de excesso de umidade"
+        ]
+      }
+    }
+  },
+  "dados": {
+    "transportes": [],
+    "estatisticas": {
+      "totalCargas": 0,
+      "totalInvestimento": 0.00,
+      "totalRetorno": 0.00,
+      "totalLucro": 0.00,
+      "ultimoRegistro": null
+    }
+  },
+  "historico": {
+    "operacoes": [],
+    "configuracoes": []
+  },
+  "sistema": {
+    "versao": "1.4.5",
+    "locale": "pt-BR",
+    "moeda": "BRL",
+    "formatoData": "DD/MM/YYYY HH:mm:ss",
+    "timezone": "America/Manaus"
+  }
+}

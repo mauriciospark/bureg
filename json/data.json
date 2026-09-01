@@ -1,0 +1,90 @@
+{
+  "produtos": {
+    "banana": {
+      "nome": "Banana",
+      "icone": "🍌",
+      "subtipos": {
+        "pinguelo": {
+          "nome": "Pinguelo",
+          "icone": "🍌",
+          "precoCompra": 0.00,
+          "precoVenda": 0.00
+        },
+        "filer": {
+          "nome": "Filer",
+          "icone": "🍌",
+          "precoCompra": 0.00,
+          "precoVenda": 0.00
+        },
+        "ferrao": {
+          "nome": "Ferrão",
+          "icone": "🍌",
+          "precoCompra": 0.00,
+          "precoVenda": 0.00
+        },
+        "media": {
+          "nome": "Média",
+          "icone": "🍌",
+          "precoCompra": 0.00,
+          "precoVenda": 0.00
+        }
+      }
+    },
+    "farinha": {
+      "nome": "Farinha",
+      "icone": "🌾",
+      "precoCompra": 0.00,
+      "precoVenda": 0.00
+    },
+    "farinhaBanana": {
+      "nome": "Farinha de Banana",
+      "icone": "🌾",
+      "precoCompra": 0.00,
+      "precoVenda": 0.00
+    },
+    "acai": {
+      "nome": "Açaí",
+      "icone": "🫐",
+      "precoCompra": 0.00,
+      "precoVenda": 0.00
+    },
+    "cara": {
+      "nome": "Cará",
+      "icone": "🥕",
+      "precoCompra": 0.00,
+      "precoVenda": 0.00
+    }
+  },
+  "regrasTransporte": {
+    "banana": [
+      "Temperatura ambiente durante o transporte",
+      "Transportar em saco de fibra",
+      "A cada parada, acrescentar mais bananas",
+      "Não pode ser amassada ou comprimida"
+    ],
+    "farinha": [
+      "Transportar em saco de fibra plastificado",
+      "Manter em ambiente quente",
+      "Não pode esfoliar - estraga o produto",
+      "Proteger da umidade excessiva"
+    ],
+    "farinhaBanana": [
+      "Transportar em saco de fibra plastificado",
+      "Manter em ambiente seco e ventilado",
+      "Proteger da umidade excessiva",
+      "Não pode ser comprimido"
+    ],
+    "acai": [
+      "Transportar em saco de fibra normal",
+      "Manter dentro do gelo durante todo o transporte",
+      "Não pode esquentar - perde toda a mercadoria",
+      "Prioridade no transporte devido à perecibilidade"
+    ],
+    "cara": [
+      "Transportar dentro de sapos",
+      "Manter ventilado durante o transporte",
+      "Não pode ser comprimido ou amassado",
+      "Proteger de excesso de umidade"
+    ]
+  }
+}
